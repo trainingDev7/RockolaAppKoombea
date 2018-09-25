@@ -88,8 +88,8 @@ app.Rockola.onSearchResponse = function(response) {
   }
 
   // when video ends
-  function onPlayerStateChange(event) {        
-      if(event.data === 0) {          
+  function onPlayerStateChange(event) {
+      if(event.data === 0) {
           alert('done');
       }
   }
