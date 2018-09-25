@@ -21,7 +21,22 @@ function onClientLoad() {
   function onSearchResponse(response) {
       $("#response").html('');
       response.items.forEach(function(e){
-          $("#response").append('<img width="'+ e.snippet.thumbnails.medium.width + '"src="'+ e.snippet.thumbnails.medium.url +'" height="'+ 
-               e.snippet.thumbnails.medium.height +'"><br></br>');
+          $("#response").append('<img data-toggle="modal" data-target="#videoModal" class="video" rel="https://www.youtube.com/embed/'+ e.id.videoId
+          +'" src="'+ e.snippet.thumbnails.medium.url +'" value="' + e.snippet.title +'"><br></br>');
       });
   }
+
+  $(function(){
+    $('#videoModal').on('shown.bs.modal', function (e) {
+      var videoSRC = $(e.relatedTarget).attr("rel")
+      $('#videoModal iframe').attr('src', videoSRC + "?rel=0&autoplay=1&showinfo=0&controls=0");
+      var valVideo = $(e.relatedTarget).attr("value");
+      $('.modal-title').append('<h4>' + valVideo + '</h4>');
+    })
+  
+    $('#videoModal').on('hidden.bs.modal',function(e) {
+      $('#videoModal iframe').attr('src', "");
+      $('.modal-title').empty('value');
+      $("#message_result_modal").hide();
+    })
+  })
