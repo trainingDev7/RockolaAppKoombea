@@ -32,11 +32,14 @@ function onClientLoad() {
       $('#videoModal iframe').attr('src', videoSRC + "?rel=0&autoplay=1&showinfo=0&controls=0");
       var valVideo = $(e.relatedTarget).attr("value");
       $('.modal-title').append('<h4>' + valVideo + '</h4>');
+      $("#song_title").val(valVideo);
+      $("#song_videoId").val(videoSRC)
     })
-  
+
     $('#videoModal').on('hidden.bs.modal',function(e) {
       $('#videoModal iframe').attr('src', "");
       $('.modal-title').empty('value');
       $("#message_result_modal").hide();
+      $("#song_title").val("");
     })
-  }) 
+  })
