@@ -10,5 +10,4 @@ class User < ApplicationRecord
       name: "#{auth_data.first_name} #{auth_data.last_name}"
     })
   end
-
 end
