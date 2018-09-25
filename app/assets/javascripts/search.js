@@ -38,7 +38,7 @@ app.Rockola.onSearchResponse = function(response) {
       var valVideo = $(e.relatedTarget).attr("value");
       $('.modal-title').append('<h4>' + valVideo + '</h4>');
       $("#song_title").val(valVideo);
-      $("#song_videoId").val(videoSRC)
+      $("#song_videoId").val(videoSRC + "?rel=0&autoplay=1&showinfo=0&fs=0")
     })
 
     $('#videoModal').on('hidden.bs.modal',function(e) {
@@ -58,3 +58,28 @@ app.Rockola.onSearchResponse = function(response) {
       })
     })
   });
+
+  var player;
+  function onYouTubePlayerAPIReady() {
+      player = new YT.Player('player', {
+        width: '640',
+        height: '390',
+        videoId: '0Bmhjf0rKe8',
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange
+        }
+      });
+  }
+
+  // autoplay video
+  function onPlayerReady(event) {
+      event.target.playVideo();
+  }
+
+  // when video ends
+  function onPlayerStateChange(event) {        
+      if(event.data === 0) {          
+          alert('done');
+      }
+  }

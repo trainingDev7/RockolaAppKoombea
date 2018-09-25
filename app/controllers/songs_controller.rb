@@ -19,6 +19,16 @@ class SongsController < ApplicationController
     end
   end
 
+  def destroy
+    @song.destroy
+    redirect_to root_path
+    if @song.destroy
+      respond_to do |format|
+      format.js
+      end
+    end
+  end
+
   private
 
   def set_songs
