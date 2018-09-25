@@ -1,5 +1,7 @@
 <h2><%= @playlist.name %></h2>
+<div class="dropdown-divider"></div>
+<div>
 <% @songs_from_playlist.each do |song| %>
-  <p><%= song.title %></p> <br>
+   <p><%= song.title %>  <%= link_to 'Play', song.videoId,  target: "myname" %></p>
 <% end %>
-<br>
+</div>

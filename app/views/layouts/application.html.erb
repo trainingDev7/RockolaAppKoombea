@@ -38,13 +38,16 @@
             </ul>
           </div>
       </div>
+        <div class="float-right" style="width:20%;">
+          <%= select_tag "playlist_created", options_from_collection_for_select(@playlists, "id", "name"), prompt: "Please select...", class: "playlist_created form-control float-right" %><br>
+        </div>
   </nav>
     <%= yield %>
     <% if notice %>
       <p class="alert alert-success"><%= notice %>
       <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>
     <% end %>
-    
+
     <% if alert %>
       <p class="alert alert-danger"><%= alert %>
       <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>

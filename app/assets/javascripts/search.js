@@ -34,7 +34,7 @@ app.Rockola.onSearchResponse = function(response) {
   $(function(){
     $('#videoModal').on('shown.bs.modal', function (e) {
       var videoSRC = $(e.relatedTarget).attr("rel")
-      $('#videoModal iframe').attr('src', videoSRC + "?rel=0&autoplay=1&showinfo=0&controls=0");
+      $('#videoModal iframe').attr('src', videoSRC + "?autoplay=1&showinfo=0");
       var valVideo = $(e.relatedTarget).attr("value");
       $('.modal-title').append('<h4>' + valVideo + '</h4>');
       $("#song_title").val(valVideo);
@@ -50,12 +50,11 @@ app.Rockola.onSearchResponse = function(response) {
 
     $('.playlist_created').on('change', function(){
       $.ajax({
-        url: 'playlists/' + $(this).val(),
-        type: 'GET',
-        success: function(result){
-        $("#js-playlist-content").html(result)
+          url: 'playlists/' + $(this).val(),
+          type: 'GET',
+          success: function(result){
+          $("#js-playlist-content").html(result)
         }
       })
     })
-
-  })
+  });
