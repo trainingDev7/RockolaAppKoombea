@@ -1,7 +1,7 @@
 var app = app || {};
 app.Rockola = app.Rockola || {};
 
-function onClientLoad() {
+  function onClientLoad() {
   gapi.client.load('youtube', 'v3', app.Rockola.onYouTubeApiLoad);
   $('#onSearchButton').on('click', app.Rockola.search);
   $('#navbarTogglerDemo01 > form').on('submit', function(e){ e.preventDefault(); });
