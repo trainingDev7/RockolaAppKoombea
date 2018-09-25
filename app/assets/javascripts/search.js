@@ -47,4 +47,15 @@ app.Rockola.onSearchResponse = function(response) {
       $("#message_result_modal").hide();
       $("#song_title").val("");
     })
+
+    $('.playlist_created').on('change', function(){
+      $.ajax({
+        url: 'playlists/' + $(this).val(),
+        type: 'GET',
+        success: function(result){
+        $("#js-playlist-content").html(result)
+        }
+      })
+    })
+
   })

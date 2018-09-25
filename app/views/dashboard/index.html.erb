@@ -1,4 +1,4 @@
-<div class="float-left" id=response></div>
+<div class="float-left" style="margin:20px; width:30%;" id=response></div>
 
 <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -39,5 +39,14 @@
           <% end %>
       </div>
     </div>
+  </div>
+</div>
+<div class="float-right" style="width:40%;">
+    <%= select_tag "playlist_created", options_from_collection_for_select(@playlists, "id", "name"), prompt: "Please select...", class: "playlist_created form-control float-right" %><br>
+</div>
+
+<div class="float-right" style="width:50%; margin:10px; padding:5px;">
+<iframe class="float-right" width="50%" height="50" src="https://www.youtube.com/embed/lHjNmyzrVvM?rel=0&showinfo=0&fs=0" allow="autoplay; encrypted-media"></iframe> <br>
+  <div class="float-right" id="js-playlist-content">
   </div>
 </div>
