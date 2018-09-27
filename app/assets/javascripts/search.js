@@ -32,6 +32,9 @@ app.Rockola.onSearchResponse = function(response) {
   });
 }
   $(function(){
+
+    $("#next").hide();
+
     $('#videoModal').on('shown.bs.modal', function (e) {
       var videoSRC = $(e.relatedTarget).attr("rel")
       $('#videoModal iframe').attr('src', videoSRC + "?autoplay=1&showinfo=0");
