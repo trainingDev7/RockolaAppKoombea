@@ -16,7 +16,7 @@ app.Rockola.search = function() {
   var request = gapi.client.youtube.search.list({
     part: 'snippet',
     type: 'video',
-    maxResults: '10',
+    maxResults: '15',
     q:query
   });
   request.execute(app.Rockola.onSearchResponse);
@@ -32,9 +32,6 @@ app.Rockola.onSearchResponse = function(response) {
   });
 }
   $(function(){
-
-    $("#next").hide();
-
     $('#videoModal').on('shown.bs.modal', function (e) {
       var videoSRC = $(e.relatedTarget).attr("rel")
       $('#videoModal iframe').attr('src', videoSRC + "?autoplay=1&showinfo=0");

@@ -12,18 +12,7 @@ class PlaylistsController < ApplicationController
   def new
     @playlist = Playlist.new
   end
-
-  def update
-    respond_to do |format|
-      if @playlist.update(playlists_params)
-        format.html { redirect_to @playlist, notice: 'Playlist was successfully updated.' }
-        format.json { render :show, status: :ok, location: @playlist }
-      else
-        format.html { render :edit }
-      end
-    end
-  end
-
+  
   def create
     @playlist = Playlist.new(playlists_params)
     @playlist.user = current_user
