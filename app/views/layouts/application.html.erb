@@ -6,7 +6,7 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application' %>
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
   </head>
 
@@ -19,17 +19,15 @@
         <a class="navbar-brand" href="#">MyRockolaApp</a>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2", style="width: 600px;" id="query" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" onclick="search()" type="submit">Search</button>
+          <button class="btn btn-outline-success my-2 my-sm-0" id="onSearchButton" type="submit">Search</button>
         </form>
         <li>
-          <button type="button" class="btn btn-light float-right">
-            <% if user_signed_in? %>
-              <%= current_user.name%>
-              <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-info" %>
-              <% else %>
-              <%= link_to "Sign In", 'users/auth/google_oauth2', class: "btn btn-info" %>
-            <% end %>
-          </button>
+          <% if user_signed_in? %>
+            <%= current_user.name%>
+            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-info" %>
+          <% else %>
+            <%= link_to "Sign In", 'users/auth/google_oauth2', class: "btn btn-light float-right" %>
+          <% end %>
         </li>
       </div>
   </nav>
