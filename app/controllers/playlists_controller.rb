@@ -1,14 +1,18 @@
 class PlaylistsController < ApplicationController
   before_action :set_playlist, only: [:show, :edit, :update, :destroy]
+  layout false, only: :show
 
   def index
     @playlists = Playlist.all
   end
 
+  def show
+  end
+
   def new
     @playlist = Playlist.new
   end
-  
+
   def create
     @playlist = Playlist.new(playlists_params)
     @playlist.user = current_user

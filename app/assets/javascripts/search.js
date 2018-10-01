@@ -27,18 +27,18 @@ app.Rockola.onSearchResponse = function(response) {
   response.items.forEach(function(e){
     $("#response").append('<img data-toggle="modal" data-target="#videoModal" class="video" rel="https://www.youtube.com/embed/'+ e.id.videoId +
                           '"src="'+ e.snippet.thumbnails.medium.url +
-                          '" value="' + e.snippet.title + 
+                          '" value="' + e.snippet.title +
                           '"><br></br>');
   });
 }
   $(function(){
     $('#videoModal').on('shown.bs.modal', function (e) {
       var videoSRC = $(e.relatedTarget).attr("rel")
-      $('#videoModal iframe').attr('src', videoSRC + "?rel=0&autoplay=1&showinfo=0&controls=0");
+      $('#videoModal iframe').attr('src', videoSRC + "?autoplay=1&showinfo=0");
       var valVideo = $(e.relatedTarget).attr("value");
       $('.modal-title').append('<h4>' + valVideo + '</h4>');
       $("#song_title").val(valVideo);
-      $("#song_videoId").val(videoSRC)
+      $("#song_videoId").val(videoSRC + "?rel=0&autoplay=1&showinfo=0&fs=0")
     })
 
     $('#videoModal').on('hidden.bs.modal',function(e) {
@@ -47,4 +47,24 @@ app.Rockola.onSearchResponse = function(response) {
       $("#message_result_modal").hide();
       $("#song_title").val("");
     })
-  })
+
+    $('.playlist_created').on('change', function(){
+      $.ajax({
+          url: 'playlists/' + $(this).val(),
+          type: 'GET',
+          success: function(result){
+          $("#js-playlist-content").html(result)
+        }
+      })
+    })
+
+    $('#song_playlist_id').on('change', function(){
+      var currentPlaylistId = $(this).val();
+      if( currentPlaylistId.length > 0) {
+        $('#add_song_to_playlist_form').attr('action', '/playlists/' + $(this).val() + '/songs');
+        $('#add_song_to_playlist_form input[type=submit]').fadeIn('fast');
+      } else {
+        $('#add_song_to_playlist_form input[type=submit]').fadeOut('fast');
+      }
+    });
+  });
