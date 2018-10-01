@@ -1,4 +1,5 @@
 class SongsController < ApplicationController
+  before_action :set_playlist, only: [:create, :show, :edit, :update, :destroy]
   before_action :set_songs, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -21,8 +22,7 @@ class SongsController < ApplicationController
 
   def destroy
     @song.destroy
-    redirect_to root_path
-    if @song.destroy
+    if @song.destroyed?
       respond_to do |format|
       format.js
       end
@@ -32,8 +32,11 @@ class SongsController < ApplicationController
   private
 
   def set_songs
-    @playlist = Playlist.find(params[:playlist_id])
     @song = @playlist.songs.find(params[:id])
+  end
+
+  def set_playlist
+    @playlist = Playlist.find(params[:playlist_id])
   end
 
   def song_params

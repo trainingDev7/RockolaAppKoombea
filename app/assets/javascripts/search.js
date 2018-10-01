@@ -27,7 +27,7 @@ app.Rockola.onSearchResponse = function(response) {
   response.items.forEach(function(e){
     $("#response").append('<img data-toggle="modal" data-target="#videoModal" class="video" rel="https://www.youtube.com/embed/'+ e.id.videoId +
                           '"src="'+ e.snippet.thumbnails.medium.url +
-                          '" value="' + e.snippet.title + 
+                          '" value="' + e.snippet.title +
                           '"><br></br>');
   });
 }
@@ -57,4 +57,14 @@ app.Rockola.onSearchResponse = function(response) {
         }
       })
     })
+
+    $('#song_playlist_id').on('change', function(){
+      var currentPlaylistId = $(this).val();
+      if( currentPlaylistId.length > 0) {
+        $('#add_song_to_playlist_form').attr('action', '/playlists/' + $(this).val() + '/songs');
+        $('#add_song_to_playlist_form input[type=submit]').fadeIn('fast');
+      } else {
+        $('#add_song_to_playlist_form input[type=submit]').fadeOut('fast');
+      }
+    });
   });
