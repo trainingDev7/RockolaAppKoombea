@@ -2,15 +2,15 @@ class SongsController < ApplicationController
   before_action :set_songs, only: [:show, :edit, :update, :destroy]
 
   def index
-    @songs = Song.all
+    @songs = @playlist.songs
   end
 
   def new
-    @song = Song.new
+    @song = @playlist.songs.build
   end
 
   def create
-    @song = Song.new(song_params)
+    @song = @playlist.songs.build(song_params)
     @song.user = current_user
     if @song.save
       respond_to do |format|
@@ -32,12 +32,12 @@ class SongsController < ApplicationController
   private
 
   def set_songs
-    @song = Song.find(params[:id])
+    @playlist = Playlist.find(params[:playlist_id])
+    @song = @playlist.songs.find(params[:id])
   end
 
   def song_params
     params.require(:song).permit(
-      :playlist_id,
       :title,
       :videoId
     )

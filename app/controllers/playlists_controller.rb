@@ -7,7 +7,6 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @songs_from_playlist = Song.where(playlist: params[:id])
   end
 
   def new
