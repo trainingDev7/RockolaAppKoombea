@@ -1,24 +1,20 @@
-# README
+# RockolaAppKoombea
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* This application serves to find your favorite songs and listen to them, you can also listen to playlists created previously.
 
-Things you may want to cover:
+* If you want to interact with the functionalities of the application you must login as a user of Koombea.
 
-* Ruby version
+* Among its features are: Create playlists, Delete playlists, Display playlists, modify playlists.
 
-* System dependencies
+* You can have full access to the features of your playlist, as well as add songs to other playlists that do not belong to you.
 
-* Configuration
+* You can not delete playlists that do not belong to you or songs that you have not added yourself.
 
-* Database creation
+* This application uses the Youtube API and an internal database (Postgresql) to store all this information.
 
-* Database initialization
+You can visit the RockolaAppKoombea site in Heroku:
+https://rockolakoombea.herokuapp.com/
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+> Rails 5.2.1
+> ruby 2.4.1p111
