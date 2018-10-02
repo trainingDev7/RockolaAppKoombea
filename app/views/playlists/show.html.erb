@@ -1,9 +1,75 @@
-<h2><%= @playlist.name %></h2>
+<h2><%= @playlist.name %>
+  <% if user_signed_in? %>
+    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalplaylist">Create playlist</button><br>
+    <%= link_to 'Delete Playlist', @playlist, method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn btn-danger float-right" %>
+  <% end %>
+</h2>
+    <div class="btn-group dropup">
+    <%= link_to 'Edit Playlist', edit_playlist_path(@playlist),
+    { :class => 'btn btn-dark dropwdown-toggle',
+                'data-toggle' => 'dropdown',
+                'aria-haspopup' => "true",
+                'aria-expanded' => "false" } %>
+    <div class="dropdown-menu menu-drop">
+        <%= form_for :playlist, remote: true, url: playlist_path(@playlist), method: :put do |f| %>
+          <h5 class="text-center">Edit your playlist</h5>
+          <%= f.label :name, "Name:" %>
+          <%= f.text_field :name %>
+          <%= f.submit class: "btn-sm btn-success" %>
+          <% end %>
+    </div>
+    </div>
+
 <% @playlist.songs.each do |song| %>
-<div id="container-song-<%= song.id %>">
-<div class="dropdown-divider"></div>
-<%= link_to 'Play song', song.videoId,  target: "myname", class: "btn btn-success" %>
-<%= link_to "Delete Song", playlist_song_url(@playlist, song), method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn btn-danger" %>
-  <p><%= song.title %></p>
-</div>
+    <div id="container-song-<%= song.id %>">
+        <div class="dropdown-divider"></div>
+        <%= link_to 'Play song', song.videoId,  target: "myname", class: "btn-sm btn-success" %>
+        <%= link_to "Delete Song", playlist_song_url(@playlist, song), method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn-sm btn-danger" %>
+        <ul>
+        <li data-video="<%= song.id %>"><%= song.title%></li>
+        </ul>
+
+    </div>
 <% end %>
+
+<style scope>
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+</style>
