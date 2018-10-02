@@ -1,8 +1,9 @@
 <h2><%= @playlist.name %></h2>
 <% @playlist.songs.each do |song| %>
+<div id="container-song-<%= song.id %>">
 <div class="dropdown-divider"></div>
 <%= link_to 'Play song', song.videoId,  target: "myname", class: "btn btn-success" %>
 <%= link_to "Delete Song", playlist_song_url(@playlist, song), method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn btn-danger" %>
   <p><%= song.title %></p>
+</div>
 <% end %>
-

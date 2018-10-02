@@ -1,4 +1,4 @@
-<% if @song.save %>
+<% if @song.persisted? %>
 $("#message_result_modal").html("Succesfully!").show();
 <% else %>
 $("#message_result_modal").html("ERROR!").show();

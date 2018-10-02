@@ -12,7 +12,7 @@ class PlaylistsController < ApplicationController
   def new
     @playlist = Playlist.new
   end
-
+  
   def create
     @playlist = Playlist.new(playlists_params)
     @playlist.user = current_user

@@ -1,7 +1,7 @@
 var app = app || {};
 app.Rockola = app.Rockola || {};
 
-function onClientLoad() {
+  function onClientLoad() {
   gapi.client.load('youtube', 'v3', app.Rockola.onYouTubeApiLoad);
   $('#onSearchButton').on('click', app.Rockola.search);
   $('#navbarTogglerDemo01 > form').on('submit', function(e){ e.preventDefault(); });
@@ -16,7 +16,7 @@ app.Rockola.search = function() {
   var request = gapi.client.youtube.search.list({
     part: 'snippet',
     type: 'video',
-    maxResults: '10',
+    maxResults: '15',
     q:query
   });
   request.execute(app.Rockola.onSearchResponse);

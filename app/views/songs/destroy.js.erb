@@ -1,0 +1,5 @@
+<% if @song.destroyed? %>
+    $("#container-song-<%= @song.id %>").remove();
+  <% else %>
+    alert("You dont have permissions for this action!");
+<% end %>

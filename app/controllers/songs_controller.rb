@@ -21,10 +21,12 @@ class SongsController < ApplicationController
   end
 
   def destroy
-    @song.destroy
-    if @song.destroyed?
-      respond_to do |format|
-      format.js
+    if (@song.user == current_user) || (@song.playlist.user == current_user)
+      @song.destroy
+      if @song.destroyed?
+        respond_to do |format|
+        format.js
+        end
       end
     end
   end
@@ -45,4 +47,5 @@ class SongsController < ApplicationController
       :videoId
     )
   end
+
 end

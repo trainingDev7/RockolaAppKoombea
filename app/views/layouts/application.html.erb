@@ -2,10 +2,11 @@
 <html>
   <head>
     <title>RockolaAppKoombea</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
   </head>
@@ -16,7 +17,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#">MyRockolaApp</a>
+        <%= link_to "MyRockolaApp", root_path, class:"navbar-brand" %>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2", style="width: 600px;" id="query" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" id="onSearchButton" type="submit">Search</button>
