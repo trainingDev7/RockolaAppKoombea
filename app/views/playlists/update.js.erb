@@ -1,0 +1,4 @@
+<% if @playlist.persisted? %>
+$(".dropdown-menu").hide();
+$(".playlist_created").append('<option value="<%= @playlist.id %>"><%= @playlist.name %></option>');
+<% end %>
