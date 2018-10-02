@@ -14,16 +14,18 @@ app.Rockola.onYouTubeApiLoad = function() {
 app.Rockola.search = function() {
   var query = $('#query').val();
   var request = gapi.client.youtube.search.list({
-    part: 'snippet',
+    part: 'snippet, id',
     type: 'video',
-    maxResults: '15',
+    maxResults: '10',
     q:query
   });
   request.execute(app.Rockola.onSearchResponse);
 }
 
 app.Rockola.onSearchResponse = function(response) {
+  var nextToken = response.nextPageToken;
   $("#response").html('');
+    nextButton(nextToken);
   response.items.forEach(function(e){
     $("#response").append('<img data-toggle="modal" data-target="#videoModal" class="video" rel="https://www.youtube.com/embed/'+ e.id.videoId +
                           '"src="'+ e.snippet.thumbnails.medium.url +
@@ -31,6 +33,33 @@ app.Rockola.onSearchResponse = function(response) {
                           '"><br></br>');
   });
 }
+
+ app.Rockola.nextPage = function(token) {
+  var query = $('#query').val();
+  var request = gapi.client.youtube.search.list({
+    part: 'snippet, id',
+    type: 'video',
+    maxResults: '10',
+    q:query,
+    pageToken: token
+  });
+  request.execute(app.Rockola.onSearchResponse);
+}
+
+app.Rockola.onSearchResponse = function(response) {
+  var nextToken = response.nextPageToken;
+  $("#response").html('');
+      nextButton(nextToken);
+      console.log(nextToken);
+  response.items.forEach(function(e){
+    $("#response").append('<img data-toggle="modal" data-target="#videoModal" class="video" rel="https://www.youtube.com/embed/'+ e.id.videoId +
+                          '"src="'+ e.snippet.thumbnails.medium.url +
+                          '" value="' + e.snippet.title +
+                          '"><br></br>');
+  });
+  $("#next").show();
+}
+
   $(function(){
 
   $("#next").hide();
@@ -41,7 +70,8 @@ app.Rockola.onSearchResponse = function(response) {
     var valVideo = $(e.relatedTarget).attr("value");
     $('.modal-title').append('<h4>' + valVideo + '</h4>');
     $("#song_title").val(valVideo);
-    $("#song_videoId").val(videoSRC + "?rel=0&autoplay=1&showinfo=0&fs=0")
+    var songId = videoSRC.split("https://www.youtube.com/embed/")
+    $("#song_videoId").val(songId[1])
   })
 
   $('#videoModal').on('hidden.bs.modal',function(e) {
@@ -49,6 +79,7 @@ app.Rockola.onSearchResponse = function(response) {
     $('.modal-title').empty('value');
     $("#message_result_modal").hide();
     $("#song_title").val("");
+    $("#song_videoId").val("")
   })
 
   $('.playlist_created').on('change', function(){

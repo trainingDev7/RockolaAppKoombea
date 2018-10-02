@@ -1,5 +1,7 @@
 <div class="float-left" style="margin:20px; width:30%;" id="response"></div>
 
+<button id="next" type="button"  class="btn btn-success fixed-bottom">Next Page</button>
+
 <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -29,6 +31,6 @@
 <%= render 'modals' %>
 
 <div class="float-right " style="width:50%; margin:0px; padding:0px;">
-  <iframe class="float-right" width="100%" src="" allow="autoplay; encrypted-media" frameborder="0" id="myname" name="myname"></iframe> <br>
+  <div class="float-right" width="100%" src="" allow="autoplay; encrypted-media" frameborder="0" id="player" name="myname"></div> <br>
   <div id="js-playlist-content"></div>
 </div>
