@@ -31,6 +31,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'devise', '~> 4.5'
 gem 'jquery-rails'
 gem 'bootstrap', '~> 4.1.3'
+gem 'bootstrap-glyphicons'
 gem 'omniauth-google-oauth2', '~> 0.5.3'
 #
 

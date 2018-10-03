@@ -3,7 +3,6 @@ class OmniauthCallbacksController < ::Devise::OmniauthCallbacksController
     @user = User.find_from_google_oauth2(request.env["omniauth.auth"].info)
     @user.remember_me = true
     sign_in(:user, @user)
-
     redirect_to root_path, notice: "Signed in succesfully"
   end
 

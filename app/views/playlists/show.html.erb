@@ -1,35 +1,33 @@
 <h2><%= @playlist.name %>
   <% if user_signed_in? %>
-    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalplaylist">Create playlist</button><br>
-    <%= link_to 'Delete Playlist', @playlist, method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn btn-danger float-right" %>
+    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalplaylist"><span class="glyphicon glyphicon-plus"></span></button>
+    <%= link_to edit_playlist_path(@playlist),  
+                { :class => 'btn btn-warning',
+                            'data-toggle' => 'modal',
+                            'data-target' => "#modalplaylistedit" } do %>
+                            <span class="glyphicon glyphicon-pencil"></span>
+    <% end %>
+    <%= link_to @playlist, method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn btn-danger" do %>
+      <span class="glyphicon glyphicon-trash"></span>
+    <% end %>
   <% end %>
 </h2>
-    <div class="btn-group dropup">
-    <%= link_to 'Edit Playlist', edit_playlist_path(@playlist),
-    { :class => 'btn btn-dark dropwdown-toggle',
-                'data-toggle' => 'dropdown',
-                'aria-haspopup' => "true",
-                'aria-expanded' => "false" } %>
-    <div class="dropdown-menu">
-        <%= form_for :playlist, remote: true, url: playlist_path(@playlist), method: :put do |f| %>
-          <h5 class="text-center">Edit your playlist</h5>
-          <%= f.label :name, "Name:" %>
-          <%= f.text_field :name %>
-          <%= f.submit class: "btn-sm btn-success" %>
-          <% end %>
-    </div>
-    </div>
 
 <% @playlist.songs.each do |song| %>
-    <div id="container-song-<%= song.id %>">
-        <div class="dropdown-divider"></div>
-        <%= link_to "Delete Song", playlist_song_url(@playlist, song), method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn-sm btn-danger float-right" %>
-        <ul>
-        <li class="btn btn-info" data-video="<%= song.videoId %>"><%= song.title%></li>
-        </ul>
-
-    </div>
+  <div id="container-song-<%= song.id %>">
+    <div class="dropdown-divider"></div>
+    <%= link_to playlist_song_url(@playlist, song), 
+                method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, 
+                class: "btn btn-danger float-right" do %>
+                <span class="glyphicon glyphicon-trash"></span>
+    <% end %>
+    <ul>
+      <li class="btn btn-light" data-video="<%= song.videoId %>"><%= song.title %></li>
+    </ul>
+  </div>
 <% end %>
+
+<%= render 'modals' %>
 
 <style scope>
 .dropdown {

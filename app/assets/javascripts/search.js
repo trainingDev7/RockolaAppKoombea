@@ -51,6 +51,7 @@ app.Rockola.onSearchResponse = function(response) {
 };
 
 $(function(){
+  $("#player").hide();
   $("#next").hide();
 
   $('#videoModal').on('shown.bs.modal', function (e) {
@@ -71,7 +72,8 @@ $(function(){
     $("#song_title, #song_videoId").val("");
   });
 
-  $('.playlist_created').on('change', function(){
+  $('#playlist_created').on('change', function(){
+    $("#player").show();
     $.ajax({
       url: 'playlists/' + $(this).val(),
       type: 'GET',
@@ -80,12 +82,24 @@ $(function(){
   });
 
   $('#song_playlist_id').on('change', function(){
+      var currentPlaylistId = $(this).val();
+      if( currentPlaylistId.length > 0) {
+        $('#add_song_to_playlist_form').attr('action', '/playlists/' + $(this).val() + '/songs');
+        $('#add_song_to_playlist_form input[type=submit]').fadeIn('fast');
+      } else {
+        $('#add_song_to_playlist_form input[type=submit]').fadeOut('fast');
+      }
+    });
+ 
+
+  $('#playlist_created').on('change', function(){
     var currentPlaylistId = $(this).val();
     if( currentPlaylistId.length > 0) {
-      $('#add_song_to_playlist_form').attr('action', '/playlists/' + $(this).val() + '/songs');
-      $('#add_song_to_playlist_form input[type=submit]').fadeIn('fast');
+      $('#player').fadeIn('fast');
+      $('#js-playlist-content').fadeIn('fast');
     } else {
-      $('#add_song_to_playlist_form input[type=submit]').fadeOut('fast');
+      $('#player').fadeOut('fast');
+      $('#js-playlist-content').fadeOut('fast');
     }
   });
 });

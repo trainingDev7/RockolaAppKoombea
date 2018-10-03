@@ -1,4 +1,6 @@
 <% if @playlist.persisted? %>
-$(".dropdown-menu").hide();
-$(".playlist_created").append('<option value="<%= @playlist.id %>"><%= @playlist.name %></option>');
+    $("#modalplaylistedit").modal('toggle');
+    $(".playlist_created").append('<option value="<%= @playlist.id %>"><%= @playlist.name %></option>');
+  <% else %>
+    alert("You dont have permissions for this action!");
 <% end %>
