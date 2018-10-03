@@ -10,7 +10,7 @@
                 'data-toggle' => 'dropdown',
                 'aria-haspopup' => "true",
                 'aria-expanded' => "false" } %>
-    <div class="dropdown-menu menu-drop">
+    <div class="dropdown-menu">
         <%= form_for :playlist, remote: true, url: playlist_path(@playlist), method: :put do |f| %>
           <h5 class="text-center">Edit your playlist</h5>
           <%= f.label :name, "Name:" %>
@@ -23,29 +23,15 @@
 <% @playlist.songs.each do |song| %>
     <div id="container-song-<%= song.id %>">
         <div class="dropdown-divider"></div>
-        <%= link_to 'Play song', song.videoId,  target: "myname", class: "btn-sm btn-success" %>
-        <%= link_to "Delete Song", playlist_song_url(@playlist, song), method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn-sm btn-danger" %>
+        <%= link_to "Delete Song", playlist_song_url(@playlist, song), method: :delete, :data => { :confirm=>"Are you sure?", remote: true }, class: "btn-sm btn-danger float-right" %>
         <ul>
-        <li data-video="<%= song.id %>"><%= song.title%></li>
+        <li class="btn btn-info" data-video="<%= song.videoId %>"><%= song.title%></li>
         </ul>
 
     </div>
 <% end %>
 
 <style scope>
-.dropbtn {
-    background-color: #3498DB;
-    color: white;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
-}
-
 .dropdown {
     position: relative;
     display: inline-block;
@@ -71,5 +57,4 @@
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
-
 </style>

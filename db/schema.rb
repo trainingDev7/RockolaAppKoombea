@@ -26,13 +26,12 @@ ActiveRecord::Schema.define(version: 2018_09_25_161435) do
   create_table "songs", force: :cascade do |t|
     t.bigint "playlist_id"
     t.bigint "user_id"
-    t.string "title", null: false
-    t.string "videoId", null: false
+    t.string "title"
+    t.string "videoId"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["playlist_id"], name: "index_songs_on_playlist_id"
     t.index ["user_id"], name: "index_songs_on_user_id"
-    t.index ["videoId"], name: "index_songs_on_videoId", unique: true
   end
 
   create_table "users", force: :cascade do |t|
