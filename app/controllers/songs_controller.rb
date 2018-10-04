@@ -25,14 +25,13 @@ class SongsController < ApplicationController
       @song.destroy
       if @song.destroyed?
         respond_to do |format|
-        format.js
+          format.js
         end
       end
     end
   end
 
   private
-
   def set_songs
     @song = @playlist.songs.find(params[:id])
   end

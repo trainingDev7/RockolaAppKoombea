@@ -13,37 +13,41 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <%= link_to "MyRockolaApp", root_path, class:"navbar-brand" %>
+        <%= link_to root_path, class:"navbar-brand" do %>
+          <i class="glyphicon glyphicon-expand"> MyRockolaApp</i>
+        <% end %>
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2", style="width: 600px;" id="query" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" id="onSearchButton" type="submit">Search</button>
+          <input class="form-control mr-sm-2", style="width: 600px;" id="query" type="search" placeholder="Search video" aria-label="Search">
+          <button class="btn btn-outline-dark my-2 my-sm-0" id="onSearchButton" target="response" type="submit"><span class="glyphicon glyphicon-search"></span></button>
         </form>
         <ul class="navbar-nav ">
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Profile</a>
-            <div class="dropdown-menu text-center" aria-labelledby="navDropDownLink">
-              <% if user_signed_in? %>
+          <% if user_signed_in? %>
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="glyphicon glyphicon-user"></span> Profile</a>
+              <div class="dropdown-menu text-center" aria-labelledby="navDropDownLink">
                 <%= current_user.name %>
-                <div class="dropdown-divider"></div>
-                <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-              <% else %>
-                <%= link_to "Sign In", 'users/auth/google_oauth2', class: "btn btn-info" %>
-              <% end %>
-            </div>
-          </li>
+                  <div class="dropdown-divider"></div>
+                  <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+                  <% else %>
+                  <%= link_to "Sign In", 'users/auth/google_oauth2', class: "btn btn-light" %>
+                <% end %>
+              </div>
+            </li>
         </ul>
-      </div>
+        </div>
       </div>
       <div class="float-right" style="width:20%;">
         <%= select_tag "playlist_created", options_from_collection_for_select(@playlists, "id", "name"), prompt: "Please select...", class: "playlist_created form-control float-right" %><br>
       </div>
     </nav>
+
     <%= yield %>
     <% if notice %>
       <p class="alert alert-success"><%= notice %>

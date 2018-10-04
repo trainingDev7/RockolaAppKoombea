@@ -24,9 +24,11 @@ class PlaylistsController < ApplicationController
   end
 
   def update
-    if @playlist.update(playlists_params)
-      respond_to do |format|
-        format.js
+    if @playlist.user == current_user
+      if @playlist.update(playlists_params)
+        respond_to do |format|
+          format.js
+        end
       end
     end
   end
@@ -36,14 +38,13 @@ class PlaylistsController < ApplicationController
       @playlist.destroy
       if @playlist.destroyed?
         respond_to do |format|
-        format.js
+          format.js
         end
       end
     end
   end
 
   private
-
   def set_playlist
     @playlist = Playlist.find(params[:id])
   end

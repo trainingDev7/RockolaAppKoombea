@@ -1,0 +1,15 @@
+<div class="modal fade" id="modalplaylistedit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <%= form_for :playlist, remote: true, url: playlist_path(@playlist), method: :put do |f| %>
+            <h5 class="text-center">Edit your playlist</h5>
+            <%= f.label :name, "Name:" %>
+            <%= f.text_field :name %>
+            <%= f.submit class: "btn btn-success" %>
+          <% end %>
+      </div>
+    </div>
+  </div>
+</div>

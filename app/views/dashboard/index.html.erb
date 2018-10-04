@@ -1,12 +1,13 @@
 <div class="float-left" style="margin:20px; width:30%;" id="response"></div>
-
 <button id="next" type="button"  class="btn btn-success fixed-bottom">Next Page</button>
 
 <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <h4 class="modal-title text-center"></h4>
         <iframe width="100%" height="350" src="" allow="autoplay; encrypted-media"></iframe>
         <% if user_signed_in? %>
@@ -14,23 +15,19 @@
             <%= f.select :playlist_id, Playlist.all.collect{ |playlist| [playlist.name, playlist.id] }, {prompt: 'Please select'} , {:class=>"playlist_created"} %>
             <%= f.hidden_field :title %>
             <%= f.hidden_field :videoId %>
-            <%= f.submit "Add to playlist", class: "btn btn-info" %>
+            <%= f.submit class: "btn-sm btn-success", style: "display: none;" %>
+            <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalplaylist"><span class="glyphicon glyphicon-plus"></span> Create</button>
           <% end %>
         <% end %>
-
         <span id="message_result_modal" class="badge badge-danger" style="display: none;"></span>
-
-        <% if user_signed_in? %>
-          <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#modalplaylist">Create playlist</button>
-        <% end %>
       </div>
     </div>
   </div>
 </div>
 
-<%= render 'modals' %>
-
 <div class="float-right " style="width:50%; margin:0px; padding:0px;">
-  <div class="float-right" width="100%" src="" allow="autoplay; encrypted-media" frameborder="0" id="player" name="myname"></div> <br>
+  <div class="float-right" width="100%" src=""  id="player" name="myname"></div><br>
   <div id="js-playlist-content"></div>
 </div>
+
+<%= render 'modals' %>

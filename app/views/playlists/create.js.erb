@@ -1,4 +1,4 @@
 <% if @playlist.save %>
-$("#modalplaylist").modal('toggle');
-$(".playlist_created").append('<option value="<%= @playlist.id %>"><%= @playlist.name %></option>');
+    $("#modalplaylist").modal('toggle');
+    $(".playlist_created").append('<option value="<%= @playlist.id %>"><%= @playlist.name %></option>');
 <% end %>
