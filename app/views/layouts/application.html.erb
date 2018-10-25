@@ -27,17 +27,12 @@
           <button class="btn btn-outline-dark my-2 my-sm-0" id="onSearchButton" target="response" type="submit"><span class="glyphicon glyphicon-search"></span></button>
         </form>
         <ul class="navbar-nav ">
-          <% if user_signed_in? %>
             <li class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="glyphicon glyphicon-user"></span> Profile</a>
               <div class="dropdown-menu text-center" aria-labelledby="navDropDownLink">
-                <%= current_user.name %>
                   <div class="dropdown-divider"></div>
-                  <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-                  <% else %>
-                  <%= link_to "Sign In", 'users/auth/google_oauth2', class: "btn btn-light" %>
-                <% end %>
+                  <%= link_to "Sign In", '#', class: "btn btn-light" %>
               </div>
             </li>
         </ul>

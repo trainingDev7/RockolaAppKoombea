@@ -12,7 +12,6 @@ class SongsController < ApplicationController
 
   def create
     @song = @playlist.songs.build(song_params)
-    @song.user = current_user
     if @song.save
       respond_to do |format|
         format.js
@@ -21,12 +20,10 @@ class SongsController < ApplicationController
   end
 
   def destroy
-    if (@song.user == current_user) || (@song.playlist.user == current_user)
-      @song.destroy
-      if @song.destroyed?
-        respond_to do |format|
-          format.js
-        end
+    @song.destroy
+    if @song.destroyed?
+      respond_to do |format|
+        format.js
       end
     end
   end
