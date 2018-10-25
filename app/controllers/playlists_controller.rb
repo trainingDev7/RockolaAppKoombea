@@ -15,7 +15,6 @@ class PlaylistsController < ApplicationController
 
   def create
     @playlist = Playlist.new(playlists_params)
-    @playlist.user = current_user
     if @playlist.save
       respond_to do |format|
         format.js
@@ -24,22 +23,18 @@ class PlaylistsController < ApplicationController
   end
 
   def update
-    if @playlist.user == current_user
-      if @playlist.update(playlists_params)
-        respond_to do |format|
-          format.js
-        end
+    if @playlist.update(playlists_params)
+      respond_to do |format|
+        format.js
       end
     end
   end
 
   def destroy
-    if @playlist.user == current_user
-      @playlist.destroy
-      if @playlist.destroyed?
-        respond_to do |format|
-          format.js
-        end
+    @playlist.destroy
+    if @playlist.destroyed?
+      respond_to do |format|
+        format.js
       end
     end
   end
