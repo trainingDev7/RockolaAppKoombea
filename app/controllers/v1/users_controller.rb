@@ -16,8 +16,7 @@ module V1
       params.permit(
         :name,
         :email,
-        :password,
-        :password_confirmation
+        :password
       )
     end
   end

@@ -1,18 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Playlists API', type: :request do
-  # initialize test data
   let(:user) { create(:user) }
   let(:headers) { valid_headers }
   let!(:playlists) { create_list(:playlist, 10) }
   let(:playlist_id) { playlists.first.id }
-  # Test suite for GET /playlists
+  
   describe 'GET /playlists' do
-    # make HTTP get request before each example
     before { get '/playlists', headers: headers }
 
     it 'returns playlists' do
-      # Note `json` is a custom helper to parse JSON responses
       expect(json).not_to be_empty
       expect(json.size).to eq(10)
     end
@@ -22,7 +19,6 @@ RSpec.describe 'Playlists API', type: :request do
     end
   end
 
-  # Test suite for GET /playlists/:id
   describe 'GET /playlists/:id' do
     before { get "/playlists/#{playlist_id}", headers: headers }
 
@@ -50,9 +46,7 @@ RSpec.describe 'Playlists API', type: :request do
     end
   end
 
-  # Test suite for POST /playlists
   describe 'POST /playlists' do
-    # valid payload
     let(:valid_attributes) { { name: 'My Playlist' } }
 
     context 'when the request is valid' do
@@ -81,7 +75,6 @@ RSpec.describe 'Playlists API', type: :request do
     end
   end
 
-  # Test suite for PUT /playlists/:id
   describe 'PUT /playlists/:id' do
     let(:valid_attributes) { { name: 'Random Music' } }
 
@@ -98,7 +91,6 @@ RSpec.describe 'Playlists API', type: :request do
     end
   end
 
-  # Test suite for DELETE /playlists/:id
   describe 'DELETE /playlists/:id' do
     before { delete "/playlists/#{playlist_id}", headers: headers }
 

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Songs API' do
-  # Initialize the test data
   let(:user) { create(:user) }
   let(:headers) { valid_headers }
   before do
@@ -11,7 +10,6 @@ RSpec.describe 'Songs API' do
   let(:playlist_id) { playlist.id }
   let(:id) { playlist.songs.first.id }
 
-  # Test suite for GET /playlists/:playlist_id/songs
   describe 'GET /playlists/:playlist_id/songs' do
     before { get "/playlists/#{playlist_id}/songs", headers: headers }
 
@@ -38,7 +36,6 @@ RSpec.describe 'Songs API' do
     end
   end
 
-  # Test suite for DELETE /playlists/:id
   describe 'DELETE /playlists/:id' do
     before { delete "/playlists/#{playlist_id}/songs/#{id}", headers: headers }
 
