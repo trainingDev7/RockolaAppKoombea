@@ -17,9 +17,10 @@ RSpec.describe 'Authentication API', type: :request do
       before { post '/signup', params: valid_credentials.to_json, headers: headers }
 
       it 'returns token' do
+        expect(json['name']).not_to be_empty
         expect(json['auth_token']).not_to be_nil
         expect(json['message']).to match(/Account created successfully/)
-        expect(json.size).to eq(2)
+        expect(json.size).to eq(3)
       end
 
       it 'returns status code 201' do
@@ -33,7 +34,7 @@ RSpec.describe 'Authentication API', type: :request do
       before { post '/signup', params: valid_credentials.to_json, headers: headers }
 
       it 'returns validation failed' do
-        expect(json['message']).to match(/Validation failed: Password can't be blank, Name can't be blank, Email can't be blank/)
+        expect(json['message']).to match("Validation failed: Password can't be blank, Name can't be blank, Email can't be blank")
         expect(json.size).to eq(1)
       end
 

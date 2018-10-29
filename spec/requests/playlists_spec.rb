@@ -69,8 +69,7 @@ RSpec.describe 'Playlists API', type: :request do
       end
 
       it 'returns a validation failure message' do
-        expect(response.body)
-          .to match(/Validation failed: Name can't be blank/)
+        expect(response.body).to match("{\"name\":[\"can't be blank\"]}")
       end
     end
   end
@@ -82,11 +81,11 @@ RSpec.describe 'Playlists API', type: :request do
       before { put "/playlists/#{playlist_id}", params: valid_attributes.to_json, headers: headers }
 
       it 'updates the record' do
-        expect(response.body).to be_empty
+        expect(response.body).to_not be_empty
       end
 
-      it 'returns status code 204' do
-        expect(response).to have_http_status(204)
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
       end
     end
   end

@@ -11,14 +11,21 @@ module V1
 
     # POST /playlists/:playlist_id/songs
     def create
-      @playlist.songs.create!(song_params)
-      json_response(@playlist, :created)
+      @song = @playlist.songs.new(song_params)
+      if @song.save
+        json_response(@song, :created)
+      else
+        json_response(@song.errors, :unprocessable_entity)
+      end
     end
 
     # DELETE /playlists/:playlist_id/songs/:id
     def destroy
-      @song.destroy
-      head :no_content
+      if @song.destroy
+        head :no_content
+      else
+        json_response(@song.errors, :unprocessable_entity)
+      end
     end
 
     private
