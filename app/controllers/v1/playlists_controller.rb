@@ -11,8 +11,12 @@ module V1
 
     # POST /playlists
     def create
-      @playlist = Playlist.create!(playlist_params)
-      json_response(@playlist, :created)
+      @playlist = Playlist.new(playlist_params)
+      if @playlist.save
+        json_response(@playlist, :created)
+      else
+        json_response(@playlist.errors, :unprocessable_entity)
+      end
     end
 
     # GET /playlists/:id
@@ -23,13 +27,20 @@ module V1
     # PUT /playlists/:id
     def update
       @playlist.update(playlist_params)
-      head :no_content
+      if @playlist.persisted?
+        json_response(@playlist, :ok)
+      else
+        json_response(@playlist.errors, :unprocessable_entity)
+      end
     end
 
     # DELETE /playlists/:id
     def destroy
-      @playlist.destroy
-      head :no_content
+      if @playlist.destroy
+        head :no_content
+      else
+        json_response(@playlist.errors, :unprocessable_entity)
+      end
     end
 
     private
