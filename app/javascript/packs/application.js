@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     data () {
       return {
         query: '',
-        video: '',
         title: '',
         videos: [],
         modalvideo: '',
@@ -103,6 +102,17 @@ document.addEventListener('DOMContentLoaded', () => {
           this.getPlaylist()
           $('#modalplaylist').modal('toggle')
         })
+      },
+      updatePlaylistName() {
+        fetch('/playlists/'+ this.currentPlaylistId, {
+          method: 'PUT',
+          header: {
+            "Content-Type": "application/json",
+            "Authorization": localStorage.getItem('user-token')
+          },
+          body: JSON.stringify({name: this.newPlaylistName})
+        })
+        .then(response => response.json())
       }
     }
   });

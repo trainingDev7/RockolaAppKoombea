@@ -15,7 +15,7 @@
     <div id="app">
       <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">RockolaApp</a>
-        <input class="form-control mr-sm-2" style="width: 600px;" v-model="query"  placeholder="Search video">
+        <input class="form-control mr-sm-2" style="width: 600px;" @keyup.enter="search" v-model="query"  placeholder="Search video">
         <button class="btn btn-dark" @click="search"><span class="glyphicon glyphicon-search"></span></button>
         <input type="button" class="btn btn-light" data-toggle="modal" data-target="#registerModal" value="Sign up">
         <input type="button" class="btn btn-light" data-toggle="modal" data-target="#LoginModal" value="Sign in">
