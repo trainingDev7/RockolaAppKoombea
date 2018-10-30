@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources :songs
     end
   end
+  mount ActionCable.server => "/cable"
   post 'authenticate', to: 'authentication#authenticate'
   post 'signup', to: 'v1/users#create'
   root 'dashboard#index'

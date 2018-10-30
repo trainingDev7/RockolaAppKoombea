@@ -1,31 +1,57 @@
-<div class="float-left" style="margin:20px; width:30%;" id="response"></div>
-<button id="next" type="button"  class="btn btn-success fixed-bottom">Next Page</button>
+<div>
+  <div class="card" v-for="video in videos" style="width: 18rem;">
+    <img :src="video.snippet.thumbnails.medium.url" class="card-img-top" data-toggle="modal" data-target="#videoModal" @click="showModal(video)">
+    <div class="card-body">
+      <h5 class="card-title">{{ video.snippet.title }}</h5>
+    </div>
+  </div>
+</div>
 
-<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<button @click="prev" v-if="videos.length > 0" class="btn btn-success float-left">Prev page</button>
+<button @click="next" v-if="videos.length > 0" class="btn btn-success float-left">Next Page</button>
+
+<div class="modal fade" id="videoModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="toogleModal(video)">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title text-center"></h4>
-        <iframe width="100%" height="350" src="" allow="autoplay; encrypted-media"></iframe>
-          <%= form_for :song, remote: true, url: root_path, html: {id: 'add_song_to_playlist_form'} do |f| %>
-            <%= f.select :playlist_id, Playlist.all.collect{ |playlist| [playlist.name, playlist.id] }, {prompt: 'Please select'} , {:class=>"playlist_created"} %>
-            <%= f.hidden_field :title %>
-            <%= f.hidden_field :videoId %>
-            <%= f.submit class: "btn-sm btn-success", style: "display: none;" %>
-            <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#modalplaylist"><span class="glyphicon glyphicon-plus"></span> Create</button>
-          <% end %>
+        <h4 class="modal-title text-center" v-html="title"></h4>
+        <iframe width="100%" height="350" :src="modalvideo" allow="autoplay; encrypted-media"></iframe>
+          <form @submit.prevent="savePlaylistSong">
+            <select class="form-control-sm" v-model="currentPlaylistIdSelect" style="width:40%;">
+              <option value="">Please Select</option>
+              <option :value="playlist.id" v-for="playlist in playlists">{{playlist.name}}</option>
+            </select>
+            <input type="hidden" :value="title">
+            <input type="hidden" :value="idVideo">
+            <input type="submit" value="Add" class="btn-sm btn-success">
+            <button type="button" class="btn btn-success float-right" 
+                    data-toggle="modal" data-target="#modalplaylist">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Create Playlist
+            </button>
+          </form>
         <span id="message_result_modal" class="badge badge-danger" style="display: none;"></span>
       </div>
     </div>
   </div>
 </div>
 
-<div class="float-right " style="width:50%; margin:0px; padding:0px;">
-  <div class="float-right" width="100%" src=""  id="player" name="myname"></div><br>
-  <div id="js-playlist-content"></div>
+<div class="modal fade" id="modalplaylist">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <form @submit.prevent="savePlaylist" method="POST">
+          <h5 class="text-center">Create your playlist</h5>
+          <label>Name:</label>
+          <input required type="text" v-model="newPlaylistName">
+          <input type="submit" class="btn btn-success">
+          </form>
+      </div>
+    </div>
+  </div>
 </div>
 
-<%= render 'modals' %>

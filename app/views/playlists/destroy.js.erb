@@ -1,6 +1,0 @@
-<% if @playlist.destroyed? %>
-    $("#js-playlist-content").empty();
-    $('option[value="<%= @playlist.id %>"]').remove();
-  <% else %>
-    alert("You dont have permissions for this action!");
-<% end %>

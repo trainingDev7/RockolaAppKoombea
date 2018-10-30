@@ -16,7 +16,7 @@ module V1
         json_response(@playlist, :created)
       else
         json_response(@playlist.errors, :unprocessable_entity)
-      end
+      end  
     end
 
     # GET /playlists/:id
