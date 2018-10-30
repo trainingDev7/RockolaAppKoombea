@@ -63,6 +63,7 @@ export default {
       .then(response => response.json())
       .then(res => {
         localStorage.setItem('user-token', res.auth_token)
+        alert('¡You are logged!')
         $('#LoginModal').modal('toggle')
       })
     },
@@ -72,11 +73,12 @@ export default {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({name: this.name, email: this.email, password: this.password})
+        body: JSON.stringify({user: {name: this.name, email: this.email, password: this.password} })
       })
       .then(response => response.json())
       .then(res => {
         localStorage.setItem('user-token', res.auth_token)
+        alert('¡You are registered!')
         $('#registerModal').modal('toggle')  
       })
     },

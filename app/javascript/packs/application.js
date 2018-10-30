@@ -7,31 +7,30 @@ Vue.use(VueYoutube)
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     el: '#app',
+    components: {
+      Playlist,
+      Login
+    },
     created(){
       this.getPlaylist()
     },
     data () {
       return {
         query: '',
-        video: '',
         title: '',
         videos: [],
         modalvideo: '',
         idVideo: '',
         tokenNextPage: '',
         tokenPrevPage: '',
-        ishidden: false,
         playlists: [],
         currentPlaylistId: '',
-        currentPlaylistIdSelect: '',
+        saveSong: '',
         currentPlaylist: '',
         playlistSongs: [],
-        newPlaylistName: ''
+        newPlaylistName: '',
+        ishidden: false
       }
-    },
-    components: {
-      Playlist,
-      Login
     },
     methods: {
       search (token) {
@@ -50,10 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
           this.videos = response.items
         });
       },
-      next (video) {
+      next () {
         this.search(this.tokenNextPage)
       },
-      prev (video) {
+      prev () {
         this.search(this.tokenPrevPage)
       },
       showModal (video) {
@@ -76,15 +75,16 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => this.playlistSongs = res)
       },
       savePlaylistSong() {
-        fetch('/playlists/'+this.currentPlaylistIdSelect+'/songs', {
+        fetch('/playlists/'+this.saveSong+'/songs', {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({title: this.title, video_id: this.idVideo, user_id: 1}),
+          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo, user_id: 1} }),
         })
         .then(response => response.json())
+        .then(res => alert('successfully added song!'))
         .catch(error => {
           alert('Not Authorized')
         })
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({name: this.newPlaylistName}),
+          body: JSON.stringify({ playlist: {name: this.newPlaylistName} }),
         })
         .then(response => response.json())
         .then(res => {

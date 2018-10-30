@@ -14,13 +14,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="toogleModal(video)">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="toogleModal">
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title text-center" v-html="title"></h4>
         <iframe width="100%" height="350" :src="modalvideo" allow="autoplay; encrypted-media"></iframe>
           <form @submit.prevent="savePlaylistSong">
-            <select class="form-control-sm" v-model="currentPlaylistIdSelect" style="width:40%;">
+            <select class="form-control-sm" v-model="saveSong" style="width:40%;">
               <option value="">Please Select</option>
               <option :value="playlist.id" v-for="playlist in playlists">{{playlist.name}}</option>
             </select>

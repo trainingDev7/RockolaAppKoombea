@@ -44,10 +44,9 @@ module V1
     end
 
     private
-
     def playlist_params
       # whitelist params
-      params.permit(:name)
+      params.require(:playlist).permit(:name)
     end
 
     def set_playlist

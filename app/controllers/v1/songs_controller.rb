@@ -31,7 +31,7 @@ module V1
     private
 
     def song_params
-      params.permit(:title, :video_id)
+      params.require(:song).permit(:title, :video_id)
     end
 
     def set_playlist
