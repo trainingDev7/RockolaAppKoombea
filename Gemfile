@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.4.1'
-
 gem 'rails', '~> 5.2.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
@@ -15,12 +14,15 @@ gem 'jquery-rails'
 gem 'bootstrap', '~> 4.1.3'
 gem 'bootstrap-glyphicons'
 gem 'omniauth-google-oauth2', '~> 0.5.3'
+gem 'webpacker', '~> 3.5', '>= 3.5.5'
+gem 'foreman', '~> 0.85.0'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rack-cors', '~> 0.4.0', :require => 'rack/cors'
 gem 'jwt', '~> 2.1'
 gem 'bcrypt', '~> 3.1', '>= 3.1.12'
 gem 'simple_command', '~> 0.0.9'
 gem 'active_model_serializers', '~> 0.10.7'
+gem 'redis-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

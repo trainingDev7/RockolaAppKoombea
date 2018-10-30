@@ -16,3 +16,9 @@
 //= require popper
 //= require_tree .
 //= require bootstrap-sprockets
+
+function onClientLoad () {
+  var apiKey = 'AIzaSyAWhX3xLCfnJ-U0HEPo7R0Zc-5J9jCJoXc';
+  gapi.client.setApiKey(apiKey);
+  gapi.client.load('youtube', 'v3');
+}

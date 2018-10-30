@@ -1,57 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RockolaAppKoombea</title>
+    <title>RockolaApp</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
-    <script src="https://www.youtube.com/player_api"></script>
+    <%= javascript_pack_tag 'application' %>
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <%= link_to root_path, class:"navbar-brand" do %>
-          <i class="glyphicon glyphicon-expand"> MyRockolaApp</i>
-        <% end %>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2", style="width: 600px;" id="query" type="search" placeholder="Search video" aria-label="Search">
-          <button class="btn btn-outline-dark my-2 my-sm-0" id="onSearchButton" target="response" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-        </form>
-        <ul class="navbar-nav ">
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="glyphicon glyphicon-user"></span> Profile</a>
-              <div class="dropdown-menu text-center" aria-labelledby="navDropDownLink">
-                  <div class="dropdown-divider"></div>
-                  <%= link_to "Sign In", '#', class: "btn btn-light" %>
-              </div>
-            </li>
-        </ul>
+    <div id="app">
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">RockolaApp</a>
+        <input class="form-control mr-sm-2" style="width: 600px;" v-model="query"  placeholder="Search video">
+        <button class="btn btn-dark" @click="search"><span class="glyphicon glyphicon-search"></span></button>
+        <input type="button" class="btn btn-light" data-toggle="modal" data-target="#registerModal" value="Sign up">
+        <input type="button" class="btn btn-light" data-toggle="modal" data-target="#LoginModal" value="Sign in">
+        <div class="float-right" style="width:20%;">
+          <select v-model="currentPlaylistId" class="float-right form-control" @change="setCurrentPlaylist">
+            <option value="">Please Select</option>
+            <option :value="playlist.id" v-for="playlist in playlists">{{playlist.name}}</option>
+          </select>
         </div>
-      </div>
-      <div class="float-right" style="width:20%;">
-        <%= select_tag "playlist_created", options_from_collection_for_select(@playlists, "id", "name"), prompt: "Please select...", class: "playlist_created form-control float-right" %><br>
-      </div>
-    </nav>
+      </nav>
 
-    <%= yield %>
-    <% if notice %>
-      <p class="alert alert-success"><%= notice %>
-      <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>
-    <% end %>
-
-    <% if alert %>
-      <p class="alert alert-danger"><%= alert %>
-      <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>
-    <% end %>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-5">
+            <%= yield%>
+            <% if notice%>
+              <p class="alert alert-success"><%= notice%>
+              <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>
+            <% elsif alert%>
+              <p class="alert alert-danger"><%= alert%>
+              <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>
+            <% end%>
+          </div>
+          <div class="col-sm-6">
+            <div>
+              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs"></playlist>
+            </div>
+          </div>
+        </div>
+          <login></login>
+      </div>
+    </div>
   </body>
 </html>
