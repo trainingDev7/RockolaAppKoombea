@@ -13,31 +13,43 @@
 
   <body>
     <div id="app">
-      <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">RockolaApp</a>
-        <input class="form-control mr-sm-2" style="width: 600px;" @keyup.enter="search" v-model="query"  placeholder="Search video">
-        <button class="btn btn-dark" @click="search"><span class="glyphicon glyphicon-search"></span></button>
-        <input type="button" class="btn btn-light" data-toggle="modal" data-target="#registerModal" value="Sign up">
-        <input type="button" class="btn btn-light" data-toggle="modal" data-target="#LoginModal" value="Sign in">
-        <div class="float-right" style="width:20%;">
-          <select v-model="currentPlaylistId" class="float-right form-control" @change="setCurrentPlaylist">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+        <span class="glyphicon glyphicon-expand"></span>
+        RockolaApp
+        </a>
+
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" @keyup.enter="search" v-model="query"  placeholder="Search video" style="width:40em;">
+          <button class="btn btn-light-inline bg-light" @click="search"><span class="glyphicon glyphicon-search"></span></button>
+        </form>
+
+        <div class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent" style="padding-right: 10px;">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item" v-if="tokenSession == null">
+              <a class="nav-link" data-toggle="modal" data-target="#registerModal" href="#">Sign up</a>
+            </li>
+            <li class="nav-item" v-if="tokenSession == null">
+              <a class="nav-link" data-toggle="modal" data-target="#LoginModal" href="#">Sign in</a>
+            </li>
+            <li class="nav-item" v-if="tokenSession">
+              <a @click="logout" class="nav-link" href="#">Sign Out</a>
+            </li>
+          </ul>
+        </div>
+
+        <form class="form-inline my-2 my-lg-0 w-25">
+          <select v-model="currentPlaylistId" class="float-right form-control w-100" @change="setCurrentPlaylist">
             <option value="">Please Select</option>
             <option :value="playlist.id" v-for="playlist in playlists">{{playlist.name}}</option>
           </select>
-        </div>
+        </form>
       </nav>
 
       <div class="container">
         <div class="row">
           <div class="col-sm-5">
             <%= yield%>
-            <% if notice%>
-              <p class="alert alert-success"><%= notice%>
-              <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>
-            <% elsif alert%>
-              <p class="alert alert-danger"><%= alert%>
-              <button aria-label="Close" class="close" data-dismiss="alert" type="button"><span aria-hidden="true">×</span></button></p>
-            <% end%>
           </div>
           <div class="col-sm-6">
             <div>
@@ -45,7 +57,7 @@
             </div>
           </div>
         </div>
-          <login></login>
+          <login :token-session="tokenSession"></login>
       </div>
     </div>
   </body>

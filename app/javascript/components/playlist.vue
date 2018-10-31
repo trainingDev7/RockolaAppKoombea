@@ -72,7 +72,10 @@ export default {
           "Authorization": localStorage.getItem('user-token')
         }
       })
-      .then(res => alert('The playlist has been deleted'))
+      .then(res => { 
+        window.location.reload() 
+        alert('The playlist has been deleted')
+      })
     }
   },
   computed: {

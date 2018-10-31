@@ -11,11 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
       Playlist,
       Login
     },
+    mounted () {
+      this.tokenSession = localStorage.getItem('user-token')
+    },
     created(){
       this.getPlaylist()
     },
     data () {
       return {
+        tokenSession: '',
         query: '',
         title: '',
         videos: [],
@@ -29,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlaylist: '',
         playlistSongs: [],
         newPlaylistName: '',
+        status: '',
+        alertMsg: '',
+        alertClass: '',
         ishidden: false
       }
     },
@@ -62,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       toogleModal (){
         this.modalvideo = ''
+        this.alertClass = ''
+        this.alertMsg   = ''
       },
       getPlaylist(){
         fetch('/playlists/')
@@ -88,16 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
           alert("Something went wrong!")
         })
       },
-      HandleResponse(response) {
+      HandleResponse(response) {       
         if (response.status == 422) {
-          alert("Song already exists in playlist!")
+          this.alertMsg = "Song already exists in playlist!"
+          this.alertClass = "alert-danger"
         } else if (response.status == 201) {
-          alert("Your song has been added!")
+          this.alertMsg = "Your song has been added!"
+          this.alertClass = "alert-success"
         } else if (response.status == 401) {
-          alert("You need to be registered!")
+          this.alertMsg = "You need to be registered!"
+          this.alertClass = "alert-warning"
         } else {
-          alert("Something went wrong!")  
+          this.alertMsg = "Something went wrong!"
+          this.alertClass = "alert-danger"
         }
+        return response
       },
       savePlaylist() {
         fetch('playlists', {
@@ -113,6 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
           this.getPlaylist()
           $('#modalplaylist').modal('toggle')
         })
+      },
+      logout () {
+        window.location.reload()
+        localStorage.removeItem('user-token')
       }
     }
   });
