@@ -81,13 +81,23 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo, user_id: 1} }),
+          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo} }),
         })
-        .then(response => response.json())
-        .then(res => alert('successfully added song!'))
+        .then(response => { this.HandleResponse(response) })
         .catch(error => {
-          alert('Not Authorized')
+          alert("Something went wrong!")
         })
+      },
+      HandleResponse(response) {
+        if (response.status == 422) {
+          alert("Song already exists in playlist!")
+        } else if (response.status == 201) {
+          alert("Your song has been added!")
+        } else if (response.status == 401) {
+          alert("You need to be registered!")
+        } else {
+          alert("Something went wrong!")  
+        }
       },
       savePlaylist() {
         fetch('playlists', {
