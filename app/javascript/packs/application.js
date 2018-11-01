@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
       Login
     },
     mounted () {
-      this.tokenSession = localStorage.getItem('user-token')
+      this.session = this.validateToken(localStorage.getItem('user-token'))
     },
     created(){
       this.getPlaylist()
     },
     data () {
       return {
-        tokenSession: '',
+        session: false,
         query: '',
         title: '',
         videos: [],
@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlaylist: '',
         playlistSongs: [],
         newPlaylistName: '',
-        status: '',
         alertMsg: '',
         alertClass: '',
-        ishidden: false
+        ishidden: false,
+        username: ''
       }
     },
     methods: {
@@ -131,6 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
       logout () {
         window.location.reload()
         localStorage.removeItem('user-token')
+      },
+      validateToken(tokenSession){
+        if (tokenSession !== null) {
+          var base64Url = tokenSession.split('.')[1];
+          var base64 = base64Url.replace('-', '+').replace('_', '/');
+          const token = JSON.parse(window.atob(base64));
+          if (token.exp <  Date.now()) {
+            this.username = token.user.name;
+            return true
+          }  
+        }
+        return false
       }
     }
   });
