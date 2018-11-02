@@ -7,9 +7,9 @@
     <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()">
     <youtube v-if="ishidden" :video-id="video_id" @ended="ended" ref="youtube"></youtube>
     <ul class="list-group">
-      <li :id="song.video_id" class="list-group-item" v-for="song in songs" :key="song.id">
+      <li :id="song.video_id" class="list-group-item" v-for="(song, index) in songs" :key="song">
         <span @click="ishidden = true, playVideo(song)">{{ song.title }}</span>
-        <button v-if="(song.user_id == userId) || (playlistInfo.user_id == userId)" class="btn-sm btn-danger" @click="confirmDeleteSong(song)">
+        <button v-if="(song.user_id == userId) || (playlistInfo.user_id == userId)" class="btn-sm btn-danger" @click="confirmDeleteSong(song), $emit('song-remove', index)">
           <span class="glyphicon glyphicon-trash"></span>
         </button>
       </li>
