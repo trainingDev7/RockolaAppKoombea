@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         })
         .then(response => this.HandleResponse(response) )
+        .then(res => this.sendSong(res))
       },
       HandleResponse(response) {
         switch(response.status){
