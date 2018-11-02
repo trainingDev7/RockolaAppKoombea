@@ -13,8 +13,10 @@ module V1
     def create
       @song = @playlist.songs.new(song_params)
       if @song.save
+        flash[:notice] = "Success!"
         json_response(@song, :created)
       else
+        flash[:alert] = "Error"
         json_response(@song.errors, :unprocessable_entity)
       end
     end

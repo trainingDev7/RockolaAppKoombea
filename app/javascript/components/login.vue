@@ -11,8 +11,7 @@
               <input required type="email" class="form-control" name="email" v-model="email"  placeholder="Example@koombea.com"><br>
               <label>Password</label>
               <input required type="password" class="form-control" name="password" v-model="password" placeholder="Password"><br>
-              <input class="btn btn-info" type="submit" value="Login">
-              <input type="button" @click="logout" class="btn btn-light" value="Logoutt">  
+              <input class="btn btn-info" type="submit" value="Login">  
             </form>
           </div>
         </div>
@@ -46,9 +45,9 @@ export default {
   name: 'login',
   data() {
     return {
-        name: '',
-        email: '',
-        password: ''
+      name: '',
+      email: '',
+      password: ''
     }
   },
   methods: {
@@ -63,7 +62,7 @@ export default {
       .then(response => response.json())
       .then(res => {
         localStorage.setItem('user-token', res.auth_token)
-        alert('¡You are logged!')
+        window.location.reload()
         $('#LoginModal').modal('toggle')
       })
     },
@@ -78,13 +77,9 @@ export default {
       .then(response => response.json())
       .then(res => {
         localStorage.setItem('user-token', res.auth_token)
-        alert('¡You are registered!')
+        window.location.reload()
         $('#registerModal').modal('toggle')  
       })
-    },
-    logout () {
-      localStorage.removeItem('user-token')
-      $('#LoginModal').modal('toggle')
     }
   }
 }

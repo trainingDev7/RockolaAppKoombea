@@ -11,11 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
       Playlist,
       Login
     },
+    mounted () {
+      this.session = this.validateToken(localStorage.getItem('user-token'))
+    },
     created(){
       this.getPlaylist()
     },
     data () {
       return {
+        session: false,
         query: '',
         title: '',
         videos: [],
@@ -29,7 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlaylist: '',
         playlistSongs: [],
         newPlaylistName: '',
-        ishidden: false
+        alertMsg: '',
+        alertClass: '',
+        ishidden: false,
+        username: ''
       }
     },
     methods: {
@@ -62,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       toogleModal (){
         this.modalvideo = ''
+        this.alertClass = ''
+        this.alertMsg   = ''
       },
       getPlaylist(){
         fetch('/playlists/')
@@ -81,13 +90,28 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo, user_id: 1} }),
+          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo} }),
         })
-        .then(response => response.json())
-        .then(res => alert('successfully added song!'))
+        .then(response => { this.HandleResponse(response) })
         .catch(error => {
-          alert('Not Authorized')
+          alert("Something went wrong!")
         })
+      },
+      HandleResponse(response) {       
+        if (response.status == 422) {
+          this.alertMsg = "Song already exists in playlist!"
+          this.alertClass = "alert-danger"
+        } else if (response.status == 201) {
+          this.alertMsg = "Your song has been added!"
+          this.alertClass = "alert-success"
+        } else if (response.status == 401) {
+          this.alertMsg = "You need to be registered!"
+          this.alertClass = "alert-warning"
+        } else {
+          this.alertMsg = "Something went wrong!"
+          this.alertClass = "alert-danger"
+        }
+        return response
       },
       savePlaylist() {
         fetch('playlists', {
@@ -103,6 +127,22 @@ document.addEventListener('DOMContentLoaded', () => {
           this.getPlaylist()
           $('#modalplaylist').modal('toggle')
         })
+      },
+      logout () {
+        window.location.reload()
+        localStorage.removeItem('user-token')
+      },
+      validateToken(tokenSession){
+        if (tokenSession !== null) {
+          var base64Url = tokenSession.split('.')[1];
+          var base64 = base64Url.replace('-', '+').replace('_', '/');
+          const token = JSON.parse(window.atob(base64));
+          if (token.exp <  Date.now()) {
+            this.username = token.user.name;
+            return true
+          }  
+        }
+        return false
       }
     }
   });

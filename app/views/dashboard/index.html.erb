@@ -27,11 +27,13 @@
             <input type="hidden" :value="title">
             <input type="hidden" :value="idVideo">
             <input type="submit" value="Add" class="btn-sm btn-success">
-            <button type="button" class="btn btn-success float-right" 
+            <button type="button" class="btn-sm btn-success float-right" 
                     data-toggle="modal" data-target="#modalplaylist">
-                    <span class="glyphicon glyphicon-plus"></span>
                     Create Playlist
             </button>
+            <div><br>
+              <span v-if="alertMsg !== ''" class="alert" :class="alertClass" role="alert">{{alertMsg}}</span>
+            </div>
           </form>
         <span id="message_result_modal" class="badge badge-danger" style="display: none;"></span>
       </div>
