@@ -58,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alertMsg: '',
         alertClass: '',
         ishidden: false,
-        username: ''
+        username: '',
+        userId: ''
       }
     },
     methods: {
@@ -120,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo} }),
+          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo, user_id: this.userId } }),
         })
         .then(response => { this.HandleResponse(response) })
       },
@@ -152,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ playlist: {name: this.newPlaylistName} }),
+          body: JSON.stringify({ playlist: { name: this.newPlaylistName, user_id: this.userId } }),
         })
         .then(response => response.json())
         .then(res => {
@@ -171,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const token = JSON.parse(window.atob(base64));
           if (token.exp <  Date.now()) {
             this.username = token.user.name;
+            this.userId = token.user.id;
             return true
           }
         }
