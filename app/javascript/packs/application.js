@@ -144,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
           case 201:
             this.alertMsg = "Your song has been added!"
             this.alertClass = "alert-success"
+            this.sendSong(response)
             break;
           case 401:
             this.alertMsg = "You need to be registered!"
