@@ -123,23 +123,25 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo} }),
         })
         .then(response => { this.HandleResponse(response) })
-        .then(res => { console.log('lo que sea') })
       },
       HandleResponse(response) {
-        if (response.status == 422) {
-          this.alertMsg = "Song already exists in playlist!"
-          this.alertClass = "alert-danger"
-        } else if (response.status == 201) {
-          this.alertMsg = "Your song has been added!"
-          this.alertClass = "alert-success"
-          this.sendSong()
-        } else if (response.status == 401) {
-          this.alertMsg = "You need to be registered!"
-          this.alertClass = "alert-warning"
-        } else {
-          this.alertMsg = "Something went wrong!"
-          this.alertClass = "alert-danger"
-          console.log('else')
+        switch(response.status){
+          case 422:
+            this.alertMsg = "Song already exists in playlist!"
+            this.alertClass = "alert-danger"
+            break;
+          case 201:
+            this.alertMsg = "Your song has been added!"
+            this.alertClass = "alert-success"
+            this.sendSong()
+            break;
+          case 401:
+            this.alertMsg = "You need to be registered!"
+            this.alertClass = "alert-warning"
+            break;
+          default:
+            this.alertMsg = "Something went wrong!"
+            this.alertClass = "alert-danger"  
         }
         return response.json()
       },

@@ -1,6 +1,6 @@
 module V1
   class SongsController < ApplicationController
-    before_action :authenticate_request, only: [:destroy]
+    before_action :authenticate_request, only: [:create, :destroy]
     before_action :set_playlist
     before_action :set_playlist_song, only: [:show, :update, :destroy]
 
