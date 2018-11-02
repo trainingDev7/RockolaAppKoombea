@@ -1,6 +1,6 @@
 module V1
   class SongsController < ApplicationController
-    before_action :authenticate_request, only: [:create, :destroy]
+    before_action :authenticate_request, only: [:destroy]
     before_action :set_playlist
     before_action :set_playlist_song, only: [:show, :update, :destroy]
 
@@ -13,10 +13,8 @@ module V1
     def create
       @song = @playlist.songs.new(song_params)
       if @song.save
-        flash[:notice] = "Success!"
         json_response(@song, :created)
       else
-        flash[:alert] = "Error"
         json_response(@song.errors, :unprocessable_entity)
       end
     end

@@ -20,7 +20,7 @@
         </a>
 
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" @keyup.enter.prevent="search" v-model="query"  placeholder="Search video" style="width:30em;">
+          <input class="form-control mr-sm-2" @keyup.enter="search" v-model="query"  placeholder="Search video" style="width:30em;">
           <button class="btn btn-light-inline bg-light" @click.prevent="search"><span class="glyphicon glyphicon-search"></span></button>
         </form>
 

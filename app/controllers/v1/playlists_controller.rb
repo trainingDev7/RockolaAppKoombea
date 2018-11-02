@@ -1,6 +1,6 @@
 module V1
   class PlaylistsController < ApplicationController
-    before_action :authenticate_request, only: [:create, :update, :destroy]
+    before_action :authenticate_request, only: [:update, :destroy]
     before_action :set_playlist, only: [:show, :update, :destroy]
 
     # GET /playlists
