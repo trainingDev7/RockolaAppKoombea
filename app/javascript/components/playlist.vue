@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     playVideo(song) {
-      this.video_id = song.video_id
+      this.video_id = song.video_id + "?autoplay=1"
       this.currentSong = song
       this.player.playVideo()
     },

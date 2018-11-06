@@ -8,6 +8,8 @@
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   </head>
@@ -28,12 +30,16 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" v-if="!session">
 <<<<<<< HEAD
+<<<<<<< HEAD
               <a class="nav-link" href="#" @click="loginModal = true, loginAction = 'signup'">Sign Up</a>
             </li>
             <li class="nav-item" v-if="!session">
               <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Log In</a>
 =======
               <a class="nav-link" href="#" @click="loginModal = true">Sign up</a>
+=======
+              <a class="nav-link" href="#" @click="loginModal = true, loginAction = 'signup'">Sign up</a>
+>>>>>>> Add web notifications
             </li>
             <li class="nav-item" v-if="!session">
               <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Sign in</a>
