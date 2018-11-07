@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 @click="edit = true" v-show="edit == false">{{playlistInfo.name }}</h4>
-    <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="confirmDelete">
+    <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="confirmDeletePlaylist">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
     <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()">
@@ -9,7 +9,7 @@
     <ul class="list-group">
       <li :id="song.video_id" class="list-group-item" v-for="song in songs" :key="song.id">
         <span @click="ishidden = true, playVideo(song)">{{ song.title }}</span>
-        <button v-if="(song.user_id == userId) || (playlistInfo.user_id == userId)" class="btn-sm btn-danger" @click="deleteSong(song)">
+        <button v-if="(song.user_id == userId) || (playlistInfo.user_id == userId)" class="btn-sm btn-danger" @click="confirmDeleteSong(song)">
           <span class="glyphicon glyphicon-trash"></span>
         </button>
       </li>
@@ -88,10 +88,16 @@ export default {
         alert("Something went wrong!")
       }
     },
-    confirmDelete() {
+    confirmDeletePlaylist() {
       var remove = confirm("Are you sure?");
       if (remove) {
         this.deletePlaylist()
+      }
+    },
+    confirmDeleteSong(song) {
+      var remove = confirm("Are you sure?");
+      if (remove) {
+        this.deleteSong(song)
       }
     }
   },

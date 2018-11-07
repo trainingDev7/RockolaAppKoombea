@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     created(){
       this.getPlaylist()
+      this.getPlaylistByUser()
     },
     data () {
       return {
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         idVideo: '',
         tokenNextPage: '',
         tokenPrevPage: '',
+        playlistsUser: [],
         playlists: [],
         currentPlaylistId: '',
         saveSong: '',
@@ -96,6 +98,11 @@ document.addEventListener('DOMContentLoaded', () => {
         this.modalvideo = ''
         this.alertClass = ''
         this.alertMsg   = ''
+      },
+      getPlaylistByUser(){
+        fetch('/users/')
+        .then(response => response.json())
+        .then(res => this.playlistsUser = res)
       },
       getPlaylist(){
         fetch('/playlists/')
@@ -159,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(res => {
+          this.getPlaylistByUser()
           this.getPlaylist()
           $('#modalplaylist').modal('toggle')
         })

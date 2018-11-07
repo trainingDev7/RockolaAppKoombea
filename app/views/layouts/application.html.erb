@@ -45,7 +45,9 @@
         <form class="form-inline my-2 my-lg-0 w-25">
           <select v-model="currentPlaylistId" class="float-right form-control w-100" @change="setCurrentPlaylist">
             <option value="">Please Select</option>
-            <option :value="playlist.id" v-for="playlist in playlists">{{playlist.name}}</option>
+            <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
+              <option v-for="playlist in user.playlists" :value="playlist.id">{{playlist.name}}</option>
+            </optgroup>
           </select>
         </form>
       </nav>
