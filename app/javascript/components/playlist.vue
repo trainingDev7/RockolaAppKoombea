@@ -1,12 +1,7 @@
 <template>
   <div>
-<<<<<<< HEAD
     <h4 @click="(playlistInfo.user_id == userId) ? (edit = true) : (edit = false)" v-show="edit == false">{{playlistInfo.name }}</h4>
     <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="confirmDeletePlaylist">
-=======
-    <h4 @click="edit = true" v-show="edit == false">{{playlistInfo.name }}</h4>
-    <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="confirmDelete">
->>>>>>> remove owner playlists and songs
       <span class="glyphicon glyphicon-trash"></span>
     </button>
     <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()" maxlength="25">

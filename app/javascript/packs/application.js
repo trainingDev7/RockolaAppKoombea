@@ -8,7 +8,10 @@ import myModal from '../components/my-modal.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(VueYoutube)
+<<<<<<< HEAD
 
+=======
+>>>>>>> adding modal vue
 var actioncable_methods;
 actioncable_methods = {
   connected(){ return console.log('Connected!')},

@@ -27,10 +27,17 @@
         <div class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent" style="padding-right: 10px;">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" v-if="!session">
+<<<<<<< HEAD
               <a class="nav-link" href="#" @click="loginModal = true, loginAction = 'signup'">Sign Up</a>
             </li>
             <li class="nav-item" v-if="!session">
               <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Log In</a>
+=======
+              <a class="nav-link" href="#" @click="loginModal = true">Sign up</a>
+            </li>
+            <li class="nav-item" v-if="!session">
+              <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Sign in</a>
+>>>>>>> adding modal vue
             </li>
             <div class="dropdown" v-if="session">
               <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
