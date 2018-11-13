@@ -14,8 +14,18 @@ actioncable_methods = {
   connected(){ return console.log('Connected!')},
   disconnected(){},
   received(data){
-    App.vue.webNotification(data)
-    App.vue.receiveNewSong(data)
+    switch (data.action) {
+      case 'add':
+        App.vue.receiveNewSong(data)
+        App.vue.webNotification(data)
+        break;
+      case 'remove':
+        App.vue.removeSong(data)
+        App.vue.deleteNotify(data)
+        break;
+      default:
+        break;
+    }
   },
   send_song(id, playlist_id, title, idVideo, userId, user_name) {
     return this.perform('send_song', {
@@ -25,6 +35,12 @@ actioncable_methods = {
       video_id: idVideo,
       user_id: userId,
       user_name: user_name
+    })
+  },
+  remove_song(title, idVideo) {
+    return this.perform('remove_song', {
+      title: title,
+      video_id: idVideo
     })
   }
 }
@@ -127,8 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sendSong(response){
         App.realtime.send_song(response.id, this.idPlaylist, this.currentVideo.title, this.currentVideo.id, this.user.id, this.user.name);
       },
-      removeSong(index) {
-        Vue.delete(this.playlistSongs, index)
+      sendRemoveSong(song){
+        App.realtime.remove_song(song.title, song.video_id);
+      },
+      removeSong(data) {
+        var index = this.playlistSongs.findIndex(obj => obj.video_id == data.video_id)
+        this.playlistSongs.splice(index, 1)
       },
       receiveNewSong(data) {
         if (this.currentPlaylist.id == data.playlist_id){
@@ -139,6 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.currentPlaylist.id == data.playlist_id){
           this.webNotify = data.user_name+" added a song: "+"'"+data.title+"'"
         }
+      },
+      deleteNotify() {
+        this.webNotify = "Someone has deleted a song"
       },
       toggleWebNotification(){
         this.webNotify = ''

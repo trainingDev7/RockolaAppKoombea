@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     playVideo(song) {
-      this.video_id = song.video_id + "?autoplay=1"
+      this.video_id = song.video_id
       this.currentSong = song
       this.player.playVideo()
     },
@@ -67,6 +67,7 @@ export default {
       })
       .then(res => {
         this.messageAlert(res)
+        this.$root.sendRemoveSong(song)
       })
     },
     deletePlaylist() {
@@ -84,9 +85,6 @@ export default {
         case 401:
         alert("You don't have permissions for this action!");
         break;
-        case 204:
-        alert("Has been deleted!");
-        break;
         default:
         alert("Something went wrong!")
       }
@@ -101,7 +99,6 @@ export default {
       var remove = confirm("Are you sure?");
       if (remove) {
         this.deleteSong(song)
-        this.$emit('song-remove', index)
       }
     }
   },

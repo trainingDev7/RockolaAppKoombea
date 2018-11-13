@@ -8,8 +8,6 @@
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   </head>
@@ -29,21 +27,10 @@
         <div class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent" style="padding-right: 10px;">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" v-if="!session">
-<<<<<<< HEAD
-<<<<<<< HEAD
               <a class="nav-link" href="#" @click="loginModal = true, loginAction = 'signup'">Sign Up</a>
             </li>
             <li class="nav-item" v-if="!session">
               <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Log In</a>
-=======
-              <a class="nav-link" href="#" @click="loginModal = true">Sign up</a>
-=======
-              <a class="nav-link" href="#" @click="loginModal = true, loginAction = 'signup'">Sign up</a>
->>>>>>> Add web notifications
-            </li>
-            <li class="nav-item" v-if="!session">
-              <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Sign in</a>
->>>>>>> adding modal vue
             </li>
             <div class="dropdown" v-if="session">
               <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,6 +45,7 @@
 
         <form class="form-inline my-2 my-lg-0 w-25">
           <select v-model="currentPlaylist" class="float-right form-control w-100" @change="getSongs">
+            <option value="">Please select</option>
             <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
               <option v-for="playlist in user.playlists" :value="playlist">{{playlist.name}}</option>
             </optgroup>
@@ -72,8 +60,8 @@
           </div>
           <div class="col-sm-6">
             <div>
-              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="user.id" @song-remove="removeSong($event)"></playlist>
-              <div v-if="webNotify !== ''" class="alert alert-primary alert-dismissible fixed-bottom" id="alert-web" role="alert" style="width:fit-content;">
+              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="user.id"></playlist>
+              <div v-if="webNotify !== ''" class="alert alert-info alert-dismissible fixed-bottom" id="alert-web" role="alert" style="width:fit-content;">
                 <strong>{{webNotify}}</strong>
                 <button @click="toggleWebNotification" type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
