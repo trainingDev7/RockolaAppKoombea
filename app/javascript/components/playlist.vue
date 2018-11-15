@@ -9,7 +9,7 @@
     <ul class="list-group">
       <li :id="song.video_id" class="list-group-item" v-for="(song, index) in songs" :key="song">
         <span @click="ishidden = true, playVideo(song)">{{ song.title }}</span>
-        <button v-if="(song.user_id == userId) || (playlistInfo.user_id == userId)" class="btn-sm btn-danger" @click="confirmDeleteSong(song), $emit('song-remove', index)">
+        <button v-if="(song.user_id == userId) || (playlistInfo.user_id == userId)" class="btn-sm btn-danger" @click="confirmDeleteSong(song, index)">
           <span class="glyphicon glyphicon-trash"></span>
         </button>
       </li>
@@ -94,10 +94,11 @@ export default {
         this.deletePlaylist()
       }
     },
-    confirmDeleteSong(song) {
+    confirmDeleteSong(song, index) {
       var remove = confirm("Are you sure?");
       if (remove) {
         this.deleteSong(song)
+        this.$emit('song-remove', index)
       }
     }
   },
