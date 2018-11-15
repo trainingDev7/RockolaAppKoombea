@@ -12,11 +12,13 @@ actioncable_methods = {
   received(data){
     return App.vue.receiveNewSong(data);
   },
-  send_song(playlist_id, title, idVideo) {
+  send_song(id, playlist_id, title, idVideo, userId) {
     return this.perform('send_song', {
+      id: id,
       playlist_id: playlist_id,
       title: title,
-      video_id: idVideo
+      video_id: idVideo,
+      user_id: userId
     })
   }
 }
@@ -106,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(res => this.playlistSongs = res)
       },
-      sendSong(){
-        App.chat.send_song(this.saveSong, this.title, this.idVideo);
+      sendSong(response){
+        App.chat.send_song(response.id, this.saveSong, this.title, this.idVideo, this.userId);
       },
       receiveNewSong(data) {
         if (this.currentPlaylistId == data.playlist_id){
@@ -121,9 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo, user_id: this.userId } }),
+          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo } }),
         })
-        .then(response => { this.HandleResponse(response) })
+        .then(response => this.HandleResponse(response) )
+        .then(res => this.sendSong(res))
       },
       HandleResponse(response) {
         switch(response.status){
@@ -134,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
           case 201:
             this.alertMsg = "Your song has been added!"
             this.alertClass = "alert-success"
-            this.sendSong()
             break;
           case 401:
             this.alertMsg = "You need to be registered!"
@@ -153,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ playlist: { name: this.newPlaylistName, user_id: this.userId } }),
+          body: JSON.stringify({ playlist: { name: this.newPlaylistName } }),
         })
         .then(response => response.json())
         .then(res => {
