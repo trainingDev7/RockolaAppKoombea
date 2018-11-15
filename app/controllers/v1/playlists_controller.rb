@@ -12,6 +12,7 @@ module V1
     # POST /playlists
     def create
       @playlist = Playlist.new(playlist_params)
+      @playlist.user = current_user
       if @playlist.save
         json_response(@playlist, :created)
       else
@@ -36,10 +37,15 @@ module V1
 
     # DELETE /playlists/:id
     def destroy
-      if @playlist.destroy
-        head :no_content
+      if @playlist.user_id == current_user.id
+        if @playlist.destroy
+          head :no_content
+        else
+          json_response(@playlist.errors, :unprocessable_entity)
+        end
       else
-        json_response(@playlist.errors, :unprocessable_entity)
+        response = { message: "You don't have permission for this action!" }
+        json_response(response, :unauthorized)
       end
     end
 
