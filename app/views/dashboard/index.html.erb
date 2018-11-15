@@ -22,10 +22,10 @@
           <form @submit.prevent="savePlaylistSong">
             <select class="form-control-sm" v-model="saveSong" style="width:40%;">
               <option value="">Please Select</option>
-              <option :value="playlist.id" v-for="playlist in playlists">{{playlist.name}}</option>
+              <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
+                <option v-for="playlist in user.playlists" :value="playlist.id">{{playlist.name}}</option>
+              </optgroup>
             </select>
-            <input type="hidden" :value="title">
-            <input type="hidden" :value="idVideo">
             <input type="submit" value="Add" class="btn-sm btn-success">
             <button type="button" class="btn-sm btn-success float-right" 
                     data-toggle="modal" data-target="#modalplaylist">

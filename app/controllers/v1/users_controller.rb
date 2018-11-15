@@ -1,8 +1,12 @@
 module V1
   class UsersController < ApplicationController
     skip_before_action :authenticate_request
-    # POST /signup
-    # return authenticated token upon signup
+
+    def index
+      @user = User.all
+      json_response(@user)
+    end
+
     def create
       user = User.new(user_params)
       if user.save

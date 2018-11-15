@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     created(){
       this.getPlaylist()
+      this.getPlaylistByUser()
     },
     data () {
       return {
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         idVideo: '',
         tokenNextPage: '',
         tokenPrevPage: '',
+        playlistsUser: [],
         playlists: [],
         currentPlaylistId: '',
         saveSong: '',
@@ -87,22 +89,30 @@ document.addEventListener('DOMContentLoaded', () => {
       prev () {
         this.search(this.tokenPrevPage)
       },
-      showModal (video) {
+      showModal(video) {
         this.title = video.snippet.title
         this.idVideo = video.id.videoId
         this.modalvideo = "https://www.youtube.com/embed/" + video.id.videoId + "?autoplay=1&showinfo=0"
       },
-      toogleModal (){
+      toogleModal() {
         this.modalvideo = ''
         this.alertClass = ''
         this.alertMsg   = ''
       },
-      getPlaylist(){
+      getPlaylistByUser() {
+        fetch('/users/')
+        .then(response => response.json())
+        .then(res => this.playlistsUser = res)
+      },
+      getPlaylist() {
         fetch('/playlists/')
         .then(response => response.json())
         .then(res => this.playlists = res)
       },
-      setCurrentPlaylist(){
+      removeSong(index) {
+        Vue.delete(this.playlistSongs, index)
+      },
+      setCurrentPlaylist() {
         this.currentPlaylist = this.playlists.filter(p => p.id == this.currentPlaylistId)[0]
         fetch('/playlists/'+this.currentPlaylistId+'/songs')
         .then(response => response.json())
@@ -159,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(res => {
+          this.getPlaylistByUser()
           this.getPlaylist()
           $('#modalplaylist').modal('toggle')
         })
