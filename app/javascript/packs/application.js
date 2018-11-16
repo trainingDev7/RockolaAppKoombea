@@ -175,8 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       },
       logout () {
-        window.location.reload()
         localStorage.removeItem('user-token')
+        window.location.reload()
       },
       validateToken(tokenSession){
         if (tokenSession !== null) {
@@ -187,6 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.username = token.user.name;
             this.userId = token.user.id;
             return true
+          } else { 
+            this.logout()
           }
         }
         return false
