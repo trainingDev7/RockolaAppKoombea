@@ -48,7 +48,6 @@ module V1
     private
 
     def song_params
-      params.require(:song).permit(:title, :video_id)
       params.require(:song).permit({ songs: [
         :title, 
         :video_id,
