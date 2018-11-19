@@ -2,30 +2,36 @@ import Vue from 'vue/dist/vue.esm'
 import VueYoutube from 'vue-youtube'
 import Playlist from '../components/playlist.vue'
 import Login from '../components/login.vue'
+import VideoList from '../components/videoList.vue'
+import BootstrapVue from 'bootstrap-vue'
+import myModal from '../components/my-modal.vue'
 
+Vue.use(BootstrapVue)
+Vue.use(VueYoutube)
 
 var actioncable_methods;
-
 actioncable_methods = {
   connected(){ return console.log('Connected!')},
   disconnected(){},
   received(data){
-    return App.vue.receiveNewSong(data);
+    console.log('Recibido')
+    App.vue.webNotification(data)
+    App.vue.receiveNewSong(data)
   },
-  send_song(id, playlist_id, title, idVideo, userId) {
+  send_song(id, playlist_id, title, idVideo, userId, user_name) {
     return this.perform('send_song', {
       id: id,
       playlist_id: playlist_id,
       title: title,
       video_id: idVideo,
-      user_id: userId
+      user_id: userId,
+      user_name: user_name
     })
   }
 }
 
-Vue.use(VueYoutube)
 document.addEventListener('DOMContentLoaded', () => {
-    App.chat = App.cable.subscriptions.create({
+    App.realtime = App.cable.subscriptions.create({
       channel: "SongChannel"
     }, actioncable_methods);
   
@@ -33,13 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#app',
     components: {
       Playlist,
-      Login
+      Login,
+      VideoList,
+      myModal
     },
     mounted () {
       this.session = this.validateToken(localStorage.getItem('user-token'))
     },
     created(){
-      this.getPlaylist()
       this.getPlaylistByUser()
     },
     data () {
@@ -47,23 +54,30 @@ document.addEventListener('DOMContentLoaded', () => {
         session: false,
         query: '',
         title: '',
-        videos: [],
-        modalvideo: '',
-        idVideo: '',
         tokenNextPage: '',
         tokenPrevPage: '',
-        playlistsUser: [],
-        playlists: [],
-        currentPlaylistId: '',
-        saveSong: '',
-        currentPlaylist: '',
-        playlistSongs: [],
+        idPlaylist: '',
+        currentPlaylist: {},
         newPlaylistName: '',
         alertMsg: '',
         alertClass: '',
-        ishidden: false,
-        username: '',
-        userId: ''
+        playlistsUser: [],
+        videos: [],
+        playlistSongs: [],
+        user: {
+          id: '',
+          name: ''
+        },
+        currentVideo: {
+          id: '',
+          url: '',
+          title: ''
+        },
+        isModal: false,
+        loginModal: false,
+        modalplaylist: false,
+        loginAction: 'signup',
+        webNotify: ''
       }
     },
     methods: {
@@ -90,53 +104,61 @@ document.addEventListener('DOMContentLoaded', () => {
         this.search(this.tokenPrevPage)
       },
       showModal(video) {
-        this.title = video.snippet.title
-        this.idVideo = video.id.videoId
-        this.modalvideo = "https://www.youtube.com/embed/" + video.id.videoId + "?autoplay=1&showinfo=0"
+        this.isModal = true
+        this.currentVideo.title = video.snippet.title
+        this.currentVideo.id = video.id.videoId
+        this.currentVideo.url = "https://www.youtube.com/embed/" + video.id.videoId + "?autoplay=1&showinfo=0"   
       },
-      toogleModal() {
-        this.modalvideo = ''
+      hideModal () {
+        this.isModal = false
+        this.currentVideo.url = ''
         this.alertClass = ''
         this.alertMsg   = ''
       },
-      getPlaylistByUser() {
+      getPlaylistByUser(){
         fetch('/users/')
         .then(response => response.json())
         .then(res => this.playlistsUser = res)
       },
-      getPlaylist() {
-        fetch('/playlists/')
-        .then(response => response.json())
-        .then(res => this.playlists = res)
-      },
-      removeSong(index) {
-        Vue.delete(this.playlistSongs, index)
-      },
-      setCurrentPlaylist() {
-        this.currentPlaylist = this.playlists.filter(p => p.id == this.currentPlaylistId)[0]
-        fetch('/playlists/'+this.currentPlaylistId+'/songs')
+      getSongs () {
+        fetch('/playlists/'+this.currentPlaylist.id+'/songs')
         .then(response => response.json())
         .then(res => this.playlistSongs = res)
       },
       sendSong(response){
-        App.chat.send_song(response.id, this.saveSong, this.title, this.idVideo, this.userId);
+        App.realtime.send_song(response.id, this.idPlaylist, this.currentVideo.title, this.currentVideo.id, this.user.id, this.user.name);
+      },
+      removeSong(index) {
+        Vue.delete(this.playlistSongs, index)
       },
       receiveNewSong(data) {
-        if (this.currentPlaylistId == data.playlist_id){
+        if (this.currentPlaylist.id == data.playlist_id){
           this.playlistSongs.push(data)
         }
       },
+      webNotification(data) {
+        if (this.currentPlaylist.id == data.playlist_id){
+          this.webNotify = data.user_name+" added a song: "+"'"+data.title+"'"
+        }
+      },
+      toggleWebNotification(){
+        this.webNotify = ''
+      },
       savePlaylistSong() {
-        fetch('/playlists/'+this.saveSong+'/songs', {
+        fetch('/playlists/'+this.idPlaylist+'/songs', {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ song: {title: this.title, video_id: this.idVideo } }),
+          body: JSON.stringify({ song: { title: this.currentVideo.title, video_id: this.currentVideo.id } }),
         })
         .then(response => this.HandleResponse(response) )
-        .then(res => this.sendSong(res))
+        .then(res => {
+          if (res.title) {
+            this.sendSong(res)
+          }
+        })
       },
       HandleResponse(response) {
         switch(response.status){
@@ -170,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(res => {
           this.getPlaylistByUser()
-          this.getPlaylist()
           $('#modalplaylist').modal('toggle')
         })
       },
@@ -184,8 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
           var base64 = base64Url.replace('-', '+').replace('_', '/');
           const token = JSON.parse(window.atob(base64));
           if (token.exp <  Date.now()) {
-            this.username = token.user.name;
-            this.userId = token.user.id;
+            this.user.name = token.user.name;
+            this.user.id = token.user.id;
             return true
           } else { 
             this.logout()

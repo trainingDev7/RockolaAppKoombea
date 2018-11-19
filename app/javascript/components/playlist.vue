@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h4 @click="edit = true" v-show="edit == false">{{playlistInfo.name }}</h4>
+    <h4 @click="(playlistInfo.user_id == userId) ? (edit = true) : (edit = false)" v-show="edit == false">{{playlistInfo.name }}</h4>
     <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="confirmDeletePlaylist">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
-    <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()">
-    <youtube v-if="ishidden" :video-id="video_id" @ended="ended" ref="youtube"></youtube>
+    <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()" maxlength="25">
+    <youtube v-if="ishidden" :player-vars="playervars" :video-id="video_id" @ended="ended" ref="youtube"></youtube>
     <ul class="list-group">
-      <li :id="song.video_id" class="list-group-item" v-for="(song, index) in songs" :key="song">
+      <li :id="song.video_id" class="list-group-item" v-for="(song, index) in songs" :key="index">
         <span @click="ishidden = true, playVideo(song)">{{ song.title }}</span>
         <button v-if="(song.user_id == userId) || (playlistInfo.user_id == userId)" class="btn-sm btn-danger" @click="confirmDeleteSong(song, index)">
           <span class="glyphicon glyphicon-trash"></span>
@@ -27,7 +27,10 @@ export default {
       ishidden: false,
       video_id: '',
       currentSong: {},
-      currentSongId: ''
+      currentSongId: '',
+      playervars: {
+        autoplay: 1
+      }
     }
   },
   methods: {
