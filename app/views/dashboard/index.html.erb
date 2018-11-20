@@ -13,20 +13,10 @@
   </span>
   <span slot="body">
     <iframe width="90%" height="300px" :src="currentVideo.url" allow="autoplay; encrypted-media"></iframe>
-    <form v-if="session" @submit.prevent="savePlaylistSong">
-      <label>Playlists:</label>
-      <select class="form-control-sm" v-model="idPlaylist" style="width:40%;">
-        <option value="">Please Select</option>
-        <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
-          <option v-for="playlist in user.playlists" :value="playlist.id">{{playlist.name}}</option>
-        </optgroup>
-      </select>
+    <form v-if="session" @submit.prevent="addSongQueued">
       <input type="hidden" :value="currentVideo.title">
       <input type="hidden" :value="currentVideo.id">
-      <input v-if="idPlaylist !== ''" type="submit" value="Add" class="btn-sm btn-success">
-      <div><br>
-        <span v-if="alertMsg !== ''" class="alert" :class="alertClass" role="alert">{{alertMsg}}</span>
-      </div>
+      <input type="submit" value="Add to Queued" class="btn-sm btn-success">
     </form>
      <button v-if="session" class="btn-sm btn-success float-right" @click="modalplaylist = true">Create Playlist</button> 
      <form v-if="modalplaylist" @submit.prevent="savePlaylist" method="POST">

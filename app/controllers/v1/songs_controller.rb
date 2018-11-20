@@ -11,12 +11,23 @@ module V1
 
     # POST /playlists/:playlist_id/songs
     def create
-      @song = @playlist.songs.new(song_params)
-      @song.user = current_user
-      if @song.save
-        json_response(@song, :created)
+      count = 0
+      @songs = song_params[:songs]
+      @songs.each do |object|
+        @song = @playlist.songs.new(object)
+        if @song.save
+          count += 1
+        end
+      end
+      response_success = { songs: "the songs were saved correctly", playlist: @playlist.id, quantity: count }
+      response_warning = { warning: "some songs were not saved correctly", playlist: @playlist.id, quantity: count }
+      response_error = { error: "the songs already exist in the playlist" }
+      if @songs.length == count
+        json_response(response_success, :created)
+      elsif count < @songs.length && count > 0
+        json_response(response_warning, :multi_status)
       else
-        json_response(@song.errors, :unprocessable_entity)
+        json_response(response_error, :unprocessable_entity)
       end
     end
 
@@ -38,6 +49,11 @@ module V1
 
     def song_params
       params.require(:song).permit(:title, :video_id)
+      params.require(:song).permit({ songs: [
+        :title, 
+        :video_id,
+        :user_id
+      ] })
     end
 
     def set_playlist

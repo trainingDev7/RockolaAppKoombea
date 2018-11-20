@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   </head>
 
-  <body>
+  <body class="bg-light">
     <div id="app">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">
@@ -81,6 +81,45 @@
           </span>  
         </my-modal>
       </div>
+
+      <div v-if="playlistQueued.length > 0" class="btn-group dropup" style="bottom: 0px; position: absolute; right: 5%; position: fixed; width: 30%;">
+          <button type="button" class="btn btn-secondary bg-dark dropdown-toggle" data-toggle="dropdown">
+            Playlist Queued ({{playlistQueued.length}})
+          </button>
+          <div class="dropdown-menu" onclick="window.event.cancelBubble = true;">
+            <div>
+              <ul>
+                <li class="list-group-item bg-dark text-light">
+                  <span>Playlist Queued</span>
+                  <button class="btn-sm btn-danger float-right" @click="playlistQueued = []">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </li>
+                <li class="list-group-item" v-for="(song, index) in playlistQueued">
+                  <span>{{song.title}}</span>
+                  <button class="btn-sm btn-danger" @click="removeSongQueued(index)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <form @submit.prevent="savePlaylistSong">
+                <select class="form-control-sm" v-model="idPlaylist" style="width:40%;">
+                  <option value="">Please Select</option>
+                  <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
+                    <option v-for="playlist in user.playlists" :value="playlist.id">{{playlist.name}}</option>
+                  </optgroup>
+                </select>
+                <input type="hidden" :value="currentVideo.title">
+                <input type="hidden" :value="currentVideo.id">
+                <input type="submit" value="Add" class="btn-sm btn-success">
+                <div><br>
+                  <span v-if="alertMsg !== ''" class="alert" :class="alertClass" role="alert">{{alertMsg}}</span>
+                </div>
+              </form>
+          </div>
+        </div>
+
     </div>
   </body>
 </html>

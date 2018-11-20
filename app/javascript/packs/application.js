@@ -16,15 +16,12 @@ actioncable_methods = {
   received(data){
     console.log('Recibido')
     App.vue.webNotification(data)
-    App.vue.receiveNewSong(data)
+    //App.vue.receiveNewSong(data)
   },
-  send_song(id, playlist_id, title, idVideo, userId, user_name) {
+  send_song(quantity, playlist, user_name) {
     return this.perform('send_song', {
-      id: id,
-      playlist_id: playlist_id,
-      title: title,
-      video_id: idVideo,
-      user_id: userId,
+      quantity: quantity,
+      playlist_id: playlist,
       user_name: user_name
     })
   }
@@ -77,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loginModal: false,
         modalplaylist: false,
         loginAction: 'signup',
-        webNotify: ''
+        webNotify: '',
+        playlistQueued: []
       }
     },
     methods: {
@@ -126,19 +124,25 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => this.playlistSongs = res)
       },
       sendSong(response){
-        App.realtime.send_song(response.id, this.idPlaylist, this.currentVideo.title, this.currentVideo.id, this.user.id, this.user.name);
+        App.realtime.send_song(response.quantity, response.playlist, this.user.name);
       },
       removeSong(index) {
         Vue.delete(this.playlistSongs, index)
       },
-      receiveNewSong(data) {
-        if (this.currentPlaylist.id == data.playlist_id){
-          this.playlistSongs.push(data)
-        }
+      addSongQueued(){
+        this.playlistQueued.push({ video_id: this.currentVideo.id, title: this.currentVideo.title, user_id: this.user.id })
       },
+      removeSongQueued(index){
+        Vue.delete(this.playlistQueued, index)
+      },
+      // receiveNewSong(data) {
+      //   if (this.currentPlaylist.id == data.playlist_id){
+      //     this.playlistSongs.push(data)
+      //   }
+      // },
       webNotification(data) {
         if (this.currentPlaylist.id == data.playlist_id){
-          this.webNotify = data.user_name+" added a song: "+"'"+data.title+"'"
+          this.webNotify = data.user_name + " has added: " + data.quantity + " song(s), please reload."
         }
       },
       toggleWebNotification(){
@@ -151,28 +155,32 @@ document.addEventListener('DOMContentLoaded', () => {
             "Content-Type": "application/json",
             "Authorization": localStorage.getItem('user-token')
           },
-          body: JSON.stringify({ song: { title: this.currentVideo.title, video_id: this.currentVideo.id } }),
+          body: JSON.stringify({ song: { songs: this.playlistQueued } }),
         })
         .then(response => this.HandleResponse(response) )
         .then(res => {
-          if (res.title) {
+          if (res.songs || res.warning) {
             this.sendSong(res)
           }
         })
       },
       HandleResponse(response) {
         switch(response.status){
-          case 422:
-            this.alertMsg = "Song already exists in playlist!"
-            this.alertClass = "alert-danger"
-            break;
           case 201:
-            this.alertMsg = "Your song has been added!"
+            this.alertMsg = "Songs were saved correctly!"
             this.alertClass = "alert-success"
+            break;
+          case 207:
+            this.alertMsg = "Some songs were not saved correctly!"
+            this.alertClass = "alert-warning"
             break;
           case 401:
             this.alertMsg = "You need to be registered!"
             this.alertClass = "alert-warning"
+            break;
+          case 422:
+            this.alertMsg = "Songs already exist in the playlist!"
+            this.alertClass = "alert-danger"
             break;
           default:
             this.alertMsg = "Something went wrong!"
