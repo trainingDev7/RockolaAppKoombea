@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 @click="(playlistInfo.user_id == userId) ? (edit = true) : (edit = false)" v-show="edit == false">{{playlistInfo.name }}</h4>
-    <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="confirmDeletePlaylist">
+    <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="active = true">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
     <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()" maxlength="25">
@@ -14,13 +14,27 @@
         </button>
       </li>
     </ul>
+    <div>
+      <my-modal @close="active = false" v-if="active">
+        <span slot="header">
+          <h5>Are you sure?</h5>
+        </span>
+        <span slot="body">          
+          <b-button @click="active = false">Cancel</b-button>
+          <b-button @click="deletePlaylist">Ok</b-button>
+        </span>
+      </my-modal>
+  </div>
+    
   </div>
 </template>
 
 <script>
+import myModal  from '../components/my-modal.vue'
 export default {
   name: 'Playlist',
   props: ['playlistInfo', 'songs', 'userId'],
+  components: { myModal },
   data(){
     return {
       edit: false,
@@ -28,12 +42,17 @@ export default {
       video_id: '',
       currentSong: {},
       currentSongId: '',
+      active: false,
       playervars: {
         autoplay: 1
       }
     }
   },
   methods: {
+    onConfirm () {
+      this.value = 'Agreed'
+		},
+   
     playVideo(song) {
       this.video_id = song.video_id
       this.currentSong = song
@@ -85,16 +104,10 @@ export default {
         alert("You don't have permissions for this action!");
         break;
         case 204:
-        alert("Has been deleted!");
+        // alert("Has been deleted!");
         break;
         default:
         alert("Something went wrong!")
-      }
-    },
-    confirmDeletePlaylist() {
-      var remove = confirm("Are you sure?");
-      if (remove) {
-        this.deletePlaylist()
       }
     },
     confirmDeleteSong(song, index) {

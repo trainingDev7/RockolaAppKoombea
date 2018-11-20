@@ -5,7 +5,10 @@ import Login from '../components/login.vue'
 import VideoList from '../components/videoList.vue'
 import BootstrapVue from 'bootstrap-vue'
 import myModal from '../components/my-modal.vue'
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
 
+Vue.use(VueMaterial)
 Vue.use(BootstrapVue)
 Vue.use(VueYoutube)
 
@@ -143,6 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
       webNotification(data) {
         if (this.currentPlaylist.id == data.playlist_id){
           this.webNotify = data.user_name + " has added: " + data.quantity + " song(s), please reload."
+          setTimeout(()=>{
+            this.webNotify = ''
+          },5000)
         }
       },
       toggleWebNotification(){

@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>RockolaApp</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
@@ -12,16 +12,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
   </head>
 
   <body>
     <div id="app">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">
-        <span class="glyphicon glyphicon-expand"></span>
-        RockolaApp
-        </a>
-        
+        <span class="glyphicon glyphicon-expand"></span>RockolaApp</a>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" @keyup.enter="query.length > 0, search" v-model="query"  placeholder="Search video" style="width:30em;">
           <button v-if="query.length > 0" class="btn btn-light-inline bg-light" @click.prevent="search"><span class="glyphicon glyphicon-search"></span></button>
@@ -47,6 +45,7 @@
 
         <form class="form-inline my-2 my-lg-0 w-25">
           <select v-model="currentPlaylist" class="float-right form-control w-100" @change="getSongs">
+            <option value="">Please Select</option>
             <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
               <option v-for="playlist in user.playlists" :value="playlist">{{playlist.name}}</option>
             </optgroup>
