@@ -9,31 +9,32 @@
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
     <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   </head>
 
   <body>
     <div id="app">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
         <span class="glyphicon glyphicon-expand"></span>
         RockolaApp
         </a>
         
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" @keyup.enter="search" v-model="query"  placeholder="Search video" style="width:30em;">
-          <button class="btn btn-light-inline bg-light" @click.prevent="search"><span class="glyphicon glyphicon-search"></span></button>
+          <input class="form-control mr-sm-2" @keyup.enter="query.length > 0, search" v-model="query"  placeholder="Search video" style="width:30em;">
+          <button v-if="query.length > 0" class="btn btn-light-inline bg-light" @click.prevent="search"><span class="glyphicon glyphicon-search"></span></button>
         </form>
         <div class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent" style="padding-right: 10px;">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" v-if="!session">
-              <a class="nav-link" data-toggle="modal" data-target="#registerModal" href="#">Sign up</a>
+              <a class="nav-link" href="#" @click="loginModal = true, loginAction = 'signup'">Sign Up</a>
             </li>
             <li class="nav-item" v-if="!session">
-              <a class="nav-link" data-toggle="modal" data-target="#LoginModal" href="#">Sign in</a>
+              <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Log In</a>
             </li>
             <div class="dropdown" v-if="session">
               <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ username }}
+                {{ user.name }}
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                 <button @click="logout" class="dropdown-item btn btn-ligth">Sign Out</button>
@@ -43,10 +44,9 @@
         </div>
 
         <form class="form-inline my-2 my-lg-0 w-25">
-          <select v-model="currentPlaylistId" class="float-right form-control w-100" @change="setCurrentPlaylist">
-            <option value="">Please Select</option>
+          <select v-model="currentPlaylist" class="float-right form-control w-100" @change="getSongs">
             <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
-              <option v-for="playlist in user.playlists" :value="playlist.id">{{playlist.name}}</option>
+              <option v-for="playlist in user.playlists" :value="playlist">{{playlist.name}}</option>
             </optgroup>
           </select>
         </form>
@@ -59,11 +59,25 @@
           </div>
           <div class="col-sm-6">
             <div>
-              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="userId" @song-remove="removeSong($event)"></playlist>
+              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="user.id" @song-remove="removeSong($event)"></playlist>
+              <div v-if="webNotify !== ''" class="alert alert-primary alert-dismissible fixed-bottom" id="alert-web" role="alert" style="width:fit-content;">
+                <strong>{{webNotify}}</strong>
+                <button @click="toggleWebNotification" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-          <login></login>
+
+        <my-modal v-show="loginModal" @close="loginModal = false">
+          <span slot="header">
+            <p class="modal-card-title">{{loginAction}}</p>
+          </span>
+          <span slot="body">
+            <login :action="loginAction"></login>
+          </span>  
+        </my-modal>
       </div>
     </div>
   </body>

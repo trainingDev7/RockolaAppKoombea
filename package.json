@@ -4,6 +4,8 @@
   "dependencies": {
     "@rails/webpacker": "3.5",
     "axios": "^0.18.0",
+    "bootstrap-auto-dismiss-alert": "^1.0.2",
+    "bootstrap-vue": "^2.0.0-rc.11",
     "vue": "^2.5.17",
     "vue-loader": "14.2.2",
     "vue-resource": "^1.5.1",
