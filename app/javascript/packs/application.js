@@ -1,10 +1,10 @@
 import Vue from 'vue/dist/vue.esm'
 import VueYoutube from 'vue-youtube'
 import Playlist from '../components/playlist.vue'
-import Login from '../components/login.vue'
 import VideoList from '../components/videoList.vue'
 import BootstrapVue from 'bootstrap-vue'
 import myModal from '../components/my-modal.vue'
+import GoogleButton from '../components/google-button.vue'
 
 Vue.use(BootstrapVue)
 Vue.use(VueYoutube)
@@ -38,12 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#app',
     components: {
       Playlist,
-      Login,
       VideoList,
-      myModal
+      myModal,
+      GoogleButton
     },
     mounted () {
-      this.session = this.validateToken(localStorage.getItem('user-token'))
+      this.validateToken()
     },
     created(){
       this.getPlaylistByUser()
@@ -198,22 +198,26 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       logout () {
         localStorage.removeItem('user-token')
-        window.location.reload()
+        gapi.auth2.getAuthInstance().signOut();
+        this.session = false
       },
-      validateToken(tokenSession){
+      validateToken() {
+        console.log('validating token...')
+        var tokenSession = localStorage.getItem('user-token')
+
         if (tokenSession !== null) {
           var base64Url = tokenSession.split('.')[1];
           var base64 = base64Url.replace('-', '+').replace('_', '/');
           const token = JSON.parse(window.atob(base64));
+
           if (token.exp <  Date.now()) {
             this.user.name = token.user.name;
             this.user.id = token.user.id;
-            return true
+            this.session = true
           } else { 
             this.logout()
           }
         }
-        return false
       }
     }
   });

@@ -1,9 +1,9 @@
 class AuthenticateUser
   prepend SimpleCommand
 
-  def initialize(email, password)
+  def initialize(name, email)
+    @name = name
     @email = email
-    @password = password
   end
 
   def call
@@ -12,11 +12,11 @@ class AuthenticateUser
 
   private
 
-  attr_accessor :email, :password, :user
+  attr_accessor :email, :user
 
   def user
-    @user = User.find_by_email(email)
-    return @user if @user && @user.authenticate(password)
+    @user = User.create_with(name: @name).find_or_create_by(email: @email)
+    return @user if @user
 
     errors.add :user_authentication, 'invalid credentials'
     nil

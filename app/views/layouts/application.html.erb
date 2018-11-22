@@ -8,11 +8,13 @@
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>
-    <script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
+    <script src="https://apis.google.com/js/api.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
   </head>
 
   <body>
+    <div style="display: block; position: fixed; width: 100%; height: 100%; background-image: url('https://ep01.epimg.net/elpais/imagenes/2018/07/07/album/1530967299_953669_1531039279_noticia_normal.jpg'); "></div>
+    </div>
     <div id="app">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">
@@ -20,18 +22,12 @@
         RockolaApp
         </a>
         
-        <form class="form-inline my-2 my-lg-0">
+        <form v-if="session" class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" @keyup.enter="query.length > 0, search" v-model="query"  placeholder="Search video" style="width:30em;">
           <button v-if="query.length > 0" class="btn btn-light-inline bg-light" @click.prevent="search"><span class="glyphicon glyphicon-search"></span></button>
         </form>
         <div class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent" style="padding-right: 10px;">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item" v-if="!session">
-              <a class="nav-link" href="#" @click="loginModal = true, loginAction = 'signup'">Sign Up</a>
-            </li>
-            <li class="nav-item" v-if="!session">
-              <a class="nav-link" @click="loginModal = true, loginAction = 'authenticate'" href="#">Log In</a>
-            </li>
             <div class="dropdown" v-if="session">
               <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ user.name }}
@@ -45,7 +41,7 @@
         <button v-if="session" class="btn-sm btn-success" @click="modalNewPlaylist = true" style="height: 2%; margin-top: 10px; margin-right: 10px;">New 
         <span class="glyphicon glyphicon-music"></span>
         </button>
-        <form class="form-inline my-2 my-lg-0 w-25">
+        <form v-if="session" class="form-inline my-2 my-lg-0 w-25">
           <select v-model="currentPlaylist" class="float-right form-control w-100" @change="getSongs">
             <option value="" selected>Please, select a playlist...</option>
             <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
@@ -74,7 +70,7 @@
           </div>
           <div class="col-sm-6">
             <div>
-              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="user.id" @song-remove="removeSong($event)"></playlist>
+              <playlist v-if="session" :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="user.id" @song-remove="removeSong($event)"></playlist>
               <div v-if="webNotify !== ''" class="alert alert-primary alert-dismissible fixed-bottom" id="alert-web" role="alert" style="width:fit-content;">
                 <strong>{{webNotify}}</strong>
                 <button @click="toggleWebNotification" type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -84,14 +80,6 @@
             </div>
           </div>
         </div>
-        <my-modal v-show="loginModal" @close="loginModal = false">
-          <span slot="header">
-            <p class="modal-card-title">{{loginAction}}</p>
-          </span>
-          <span slot="body">
-            <login :action="loginAction"></login>
-          </span>  
-        </my-modal>
       </div>
     </div>
   </body>
