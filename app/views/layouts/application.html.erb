@@ -45,6 +45,7 @@
 
         <form class="form-inline my-2 my-lg-0 w-25">
           <select v-model="currentPlaylist" class="float-right form-control w-100" @change="getSongs">
+            <option value="">Please select</option>
             <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
               <option v-for="playlist in user.playlists" :value="playlist">{{playlist.name}}</option>
             </optgroup>
@@ -59,8 +60,8 @@
           </div>
           <div class="col-sm-6">
             <div>
-              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="user.id" @song-remove="removeSong($event)"></playlist>
-              <div v-if="webNotify !== ''" class="alert alert-primary alert-dismissible fixed-bottom" id="alert-web" role="alert" style="width:fit-content;">
+              <playlist :playlist-info="currentPlaylist" :songs="playlistSongs" :user-id="user.id"></playlist>
+              <div v-if="webNotify !== ''" class="alert alert-info alert-dismissible fixed-bottom" id="alert-web" role="alert" style="width:fit-content;">
                 <strong>{{webNotify}}</strong>
                 <button @click="toggleWebNotification" type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
