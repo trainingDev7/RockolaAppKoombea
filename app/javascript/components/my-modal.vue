@@ -9,8 +9,8 @@
     <div class="modal-card-body">
       <slot name="body"></slot>
     </div>
-    <button class="modal-close" @click="$emit('close')"></button>
   </div>
+  <button class="modal-close" @click="$emit('close')"></button>
 </div>
 </template>
 
