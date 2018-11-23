@@ -2,7 +2,7 @@ class AuthenticationController < ApplicationController
  skip_before_action :authenticate_request, only: :authenticate
 
   def authenticate
-    auth = AuthenticateUser.call(user_params[:email], user_params[:password])
+    auth = AuthenticateUser.call(user_params[:name], user_params[:email])
 
     if auth.success?
       render json: { auth_token: auth.result }
@@ -13,8 +13,8 @@ class AuthenticationController < ApplicationController
 
   def user_params
     params.require(:user).permit(
-      :email,
-      :password
+      :name,
+      :email
     )
   end
 end

@@ -7,6 +7,12 @@
 <button @click="prev" v-if="videos.length > 0" class="btn btn-success float-left">Prev page</button>
 <button @click="next" v-if="videos.length > 0" class="btn btn-success float-left">Next Page</button>
 
+<div style="position: fixed;left: 40%;top: 40%;">
+  <google-button v-if="!session" @success="validateToken"></google-button>    
+</div>
+
+
+
 <my-modal @close="hideModal" v-show="isModal">
   <span slot="header">
     <p class="modal-card-title">{{currentVideo.title}}</p>
@@ -27,13 +33,6 @@
       <div><br>
         <span v-if="alertMsg !== ''" class="alert" :class="alertClass" role="alert">{{alertMsg}}</span>
       </div>
-    </form>
-     <button v-if="session" class="btn-sm btn-success float-right" @click="modalplaylist = true">Create Playlist</button> 
-     <form v-if="modalplaylist" @submit.prevent="savePlaylist" method="POST">
-      <h5 class="text-center">Create your playlist</h5>
-      <label>Name:</label>
-      <input required type="text" v-model="newPlaylistName" maxlength="25">
-      <input type="submit" @click="modalplaylist = false" class="btn btn-success">
     </form>
   </span>
 </my-modal>

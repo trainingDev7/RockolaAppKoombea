@@ -4,7 +4,7 @@
     <button v-if="playlistInfo.id > 0 && playlistInfo.user_id == userId" class="btn-sm btn-danger" @click="confirmDeletePlaylist">
       <span class="glyphicon glyphicon-trash"></span>
     </button>
-    <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()" maxlength="25">
+    <input v-if="edit == true" v-model="playlistInfo.name" @keyup.enter="edit = false, updatePlaylistName()" maxlength="25"> 
     <youtube v-if="ishidden" :player-vars="playervars" :video-id="video_id" @ended="ended" ref="youtube"></youtube>
     <ul class="list-group">
       <li :id="song.video_id" class="list-group-item" v-for="(song, index) in songs" :key="index">
