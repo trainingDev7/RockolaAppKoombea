@@ -42,9 +42,12 @@
             </div>
           </ul>
         </div>
-
+        <button v-if="session" class="btn-sm btn-success" @click="modalNewPlaylist = true" style="height: 2%; margin-top: 10px; margin-right: 10px;">New 
+        <span class="glyphicon glyphicon-music"></span>
+        </button>
         <form class="form-inline my-2 my-lg-0 w-25">
           <select v-model="currentPlaylist" class="float-right form-control w-100" @change="getSongs">
+            <option value="" selected>Please, select a playlist...</option>
             <optgroup v-if="user.playlists.length > 0" :label="user.name" v-for="user in playlistsUser">
               <option v-for="playlist in user.playlists" :value="playlist">{{playlist.name}}</option>
             </optgroup>
@@ -53,6 +56,18 @@
       </nav>
 
       <div class="container">
+        <my-modal @close="hideModal" v-show="modalNewPlaylist">
+          <span slot="header">
+            <p class="modal-card-title">New Playlist</p>
+          </span>
+          <span slot="body">
+            <form @submit.prevent="savePlaylist" method="POST">
+              <label>Name:</label>
+              <input required type="text" v-model="newPlaylistName" maxlength="25">
+              <input type="submit" class="btn btn-success">
+            </form>
+          </span>
+        </my-modal>
         <div class="row">
           <div class="col-sm-5">
             <%= yield%>
@@ -69,7 +84,6 @@
             </div>
           </div>
         </div>
-
         <my-modal v-show="loginModal" @close="loginModal = false">
           <span slot="header">
             <p class="modal-card-title">{{loginAction}}</p>

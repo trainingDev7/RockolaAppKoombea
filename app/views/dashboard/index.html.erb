@@ -28,13 +28,6 @@
         <span v-if="alertMsg !== ''" class="alert" :class="alertClass" role="alert">{{alertMsg}}</span>
       </div>
     </form>
-     <button v-if="session" class="btn-sm btn-success float-right" @click="modalplaylist = true">Create Playlist</button> 
-     <form v-if="modalplaylist" @submit.prevent="savePlaylist" method="POST">
-      <h5 class="text-center">Create your playlist</h5>
-      <label>Name:</label>
-      <input required type="text" v-model="newPlaylistName" maxlength="25">
-      <input type="submit" @click="modalplaylist = false" class="btn btn-success">
-    </form>
   </span>
 </my-modal>
 

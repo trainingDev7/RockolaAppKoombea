@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tokenNextPage: '',
         tokenPrevPage: '',
         idPlaylist: '',
-        currentPlaylist: {},
+        currentPlaylist: '',
         newPlaylistName: '',
         alertMsg: '',
         alertClass: '',
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         isModal: false,
         loginModal: false,
-        modalplaylist: false,
+        modalNewPlaylist: false,
         loginAction: 'signup',
         webNotify: ''
       }
@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       hideModal () {
         this.isModal = false
+        this.modalNewPlaylist = false
         this.currentVideo.url = ''
         this.alertClass = ''
         this.alertMsg   = ''
@@ -191,7 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(res => {
           this.getPlaylistByUser()
-          $('#modalplaylist').modal('toggle')
+          this.modalNewPlaylist = false
+          this.newPlaylistName = ''
         })
       },
       logout () {
